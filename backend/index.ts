@@ -17,6 +17,13 @@ app.use(express.json());
 
 app.use(cors());
 
+// app.get("/", async (request, response) => {
+//   const { rows } = await client.query(
+//     "SELECT * FROM christmasmarket ORDER BY name"
+//   );
+//   response.send(rows);
+// });
+
 const port = 3000;
 
 app.listen(port, () => {
