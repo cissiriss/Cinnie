@@ -3,5 +3,11 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "ES2022",
+    "sourceMap": true
+  }
 }
