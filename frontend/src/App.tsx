@@ -1,4 +1,3 @@
-
 import Home from "./components/Home";
 import RecepieForm from "./components/RecepieForm";
 
@@ -37,5 +36,6 @@ function App() {
   ]);
 
   return <RouterProvider router={router} />;
+}
 
-
+export default App;
