@@ -1,9 +1,9 @@
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import NewRecipe from "./components/NewRecipe";
-import MenuList from "./components/MenuList";
 import NewMenu from "./components/NewMenu";
 import { createHashRouter, Outlet, RouterProvider } from "react-router-dom";
+import AllMenus from "./components/AllMenus";
 
 function App() {
   const router = createHashRouter([
@@ -11,7 +11,7 @@ function App() {
       children: [
         { element: <Home />, path: "/" },
         { element: <NewRecipe />, path: "/addRecipe" },
-        { element: <MenuList />, path: "/menus" },
+        { element: <AllMenus />, path: "/menus" },
         { element: <NewMenu />, path: "/addMenu" },
       ],
       element: (

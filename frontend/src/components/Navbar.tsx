@@ -16,8 +16,7 @@ export default function Navbar() {
             <li className="m-4">
               <Link
                 className="font-bold text-dark-green text-xl"
-                to="/addRecipe"
-              >
+                to="/addRecipe">
                 Add recipe
               </Link>
             </li>
