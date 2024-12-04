@@ -13,7 +13,7 @@ function App() {
     {
       children: [
         { element: <Home />, path: "/" },
-        { element: <RecepieForm />, path: "/addRecipe" },
+        { element: <RecepieForm />, path: "/addRecipie" },
       ],
       element: (
         <>
@@ -23,7 +23,7 @@ function App() {
                 <Link to="/">Hem</Link>
               </li>
               <li>
-                <Link to="/addRecipe">Add recipe</Link>
+                <Link to="/addRecipie">Add recipie</Link>
               </li>
             </ul>
           </nav>

@@ -10,7 +10,6 @@ export default function RecepieForm() {
 
   return (
     <div>
-      <h1>Add recepie</h1>
       <input
         type="text"
         placeholder="Recepie name"
