@@ -1,51 +1,25 @@
-import { useEffect, useState } from "react";
-
-interface Menu {
-  id: number;
-  name: string;
-  description: string;
-}
+import SelectRecipe from "./SelectRecipe";
+// interface Menu {
+//   id: number;
+//   name: string;
+//   description: string;
+// }
 
 const MenuForm = () => {
-  const [menus, setMenus] = useState<Menu[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchMenus = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/menus");
-        if (!response.ok) {
-          throw new Error("Failed to fetch menus");
-        }
-        const data = await response.json();
-        setMenus(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred");
-        }
-      }
-    };
-    fetchMenus();
-  }, []);
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
   return (
-    <div className="container mx-auto py-4">
-      <div className="prose">
-        <h1>Menus from MenuForm</h1>
-        <ul>
-          {menus.map((menu) => (
-            <li key={menu.id}>
-              <h2>{menu.name}</h2>
-              <p>{menu.description}</p>
-            </li>
-          ))}
-        </ul>
+    <div className="container flex flex-col items-center w-full">
+      <div className="container flex flex-col items-center w-full max-w-md m-4">
+        <input
+          type="text"
+          placeholder="Menu name"
+          className="input input-bordered input-success w-full max-w-md m-4"
+        />
+
+        <SelectRecipe />
+
+        <button className="btn btn-neutral m-4 w-full max-w-xs">
+          Add Recipe
+        </button>
       </div>
     </div>
   );

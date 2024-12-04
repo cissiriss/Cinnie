@@ -84,13 +84,22 @@ client.connect();
 var app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
+// app.get("/api/menus", async (request, response) => {
+//   try {
+//     const { rows } = await client.query("SELECT * FROM menus");
+//     response.status(200).json(rows);
+//   } catch (error) {
+//     console.error("Error fetching menus:", error);
+//     response.status(500).send("Server error");
+//   }
+// });
 app.get("/api/menus", function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query("SELECT * FROM menus")];
+                return [4 /*yield*/, client.query("SELECT mp.name AS meal_plan_name, r.name AS recipe_name FROM meal_plan_recipes mpr JOIN recipes r ON mpr.recipe_id = r.id JOIN meal_plans mp ON mpr.meal_plan_id = mp.id WHERE mpr.meal_plan_id = 1")];
             case 1:
                 rows = (_a.sent()).rows;
                 response.status(200).json(rows);
