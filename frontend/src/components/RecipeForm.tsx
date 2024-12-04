@@ -9,40 +9,35 @@ export default function RecepieForm() {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Recepie name"
-        className="input input-bordered input-success w-full max-w-xs m-4"
-      />
-      <input
-        type="text"
-        placeholder="Description"
-        className="input input-bordered input-success w-full max-w-xs m-4"
-      />
-      <input
-        type="text"
-        placeholder="Instructions"
-        className="input input-bordered input-success w-full max-w-xs m-4"
-      />
-      <input
-        type="text"
-        placeholder="Type here"
-        className="input input-bordered input-success w-full max-w-xs m-4"
-      />
-      <input
-        type="text"
-        placeholder="Cook time"
-        className="input input-bordered input-success w-full max-w-xs m-4"
-      />
+    <div className="container flex flex-col items-center w-full">
+      <div className="container flex flex-col items-center w-full max-w-md m-4">
+        <input
+          type="text"
+          placeholder="Recepie name"
+          className="input input-bordered input-success w-full max-w-md m-4"
+        />
+        <textarea
+          className="textarea textarea-bordered w-full max-w-md m-4"
+          placeholder="Description"
+        ></textarea>
+        <textarea
+          className="textarea textarea-bordered w-full max-w-md m-4"
+          placeholder="Instructions"
+        ></textarea>
+        <input
+          type="text"
+          placeholder="Cook time"
+          className="input input-bordered input-success w-full max-w-md m-4"
+        />
+      </div>
 
-      <div className="container flex flex-col m-4">
+      <div className="container flex flex-col items-center w-full max-w-md m-4">
         {units.map((index) => (
           <SelectUnit key={index} />
         ))}
 
         <button
-          className="btn btn-success m-4 max-w-xs"
+          className="btn btn-neutral m-4 w-full max-w-xs"
           onClick={handleAddUnit}
         >
           Add Ingredient

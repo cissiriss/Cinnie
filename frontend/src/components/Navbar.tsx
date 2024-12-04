@@ -3,7 +3,7 @@ import logo from "../assets/Header.png";
 
 export default function Navbar() {
   return (
-    <div className="flex justify-center">
+    <div className="container flex flex-col items-center w-full">
       <nav>
         <img src={logo} alt="Header" sizes="80" className="rounded-3xl mt-12" />
         <div className="flex justify-center">
@@ -16,7 +16,8 @@ export default function Navbar() {
             <li className="m-4">
               <Link
                 className="font-bold text-dark-green text-xl"
-                to="/addRecipe">
+                to="/addRecipe"
+              >
                 Add recipe
               </Link>
             </li>
