@@ -27,6 +27,16 @@ app.get("/api/menus", async (request, response) => {
   }
 });
 
+app.get("/api/recipes", async (req, res) => {
+  try {
+    const { rows } = await client.query("SELECT * FROM recipes");
+    res.json(rows);
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+    res.status(500).send("Server error");
+  }
+});
+
 const port = 3000;
 
 app.listen(port, () => {
