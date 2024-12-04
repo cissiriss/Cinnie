@@ -17,12 +17,15 @@ app.use(express.json());
 
 app.use(cors());
 
-// app.get("/", async (request, response) => {
-//   const { rows } = await client.query(
-//     "SELECT * FROM christmasmarket ORDER BY name"
-//   );
-//   response.send(rows);
-// });
+app.get("/api/menus", async (request, response) => {
+  try {
+    const { rows } = await client.query("SELECT * FROM menus");
+    response.status(200).json(rows);
+  } catch (error) {
+    console.error("Error fetching menus:", error);
+    response.status(500).send("Server error");
+  }
+});
 
 const port = 3000;
 

@@ -1,6 +1,7 @@
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import RecipeForm from "./components/RecipeForm";
+import MenuList from "./components/MenuList";
 import { createHashRouter, Outlet, RouterProvider } from "react-router-dom";
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       children: [
         { element: <Home />, path: "/" },
         { element: <RecipeForm />, path: "/addRecipe" },
+        { element: <MenuList />, path: "/menus" },
       ],
       element: (
         <>
