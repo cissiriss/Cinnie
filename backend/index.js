@@ -104,6 +104,26 @@ app.get("/api/menus", function (request, response) { return __awaiter(void 0, vo
         }
     });
 }); });
+app.get("/api/recipes", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var rows, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, client.query("SELECT * FROM recipes")];
+            case 1:
+                rows = (_a.sent()).rows;
+                res.json(rows);
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                console.error("Error fetching recipes:", error_2);
+                res.status(500).send("Server error");
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 var port = 3000;
 app.listen(port, function () {
     console.log("Webbtjänsten kan nu ta emot anrop.");

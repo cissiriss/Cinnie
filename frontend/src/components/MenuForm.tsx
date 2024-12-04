@@ -6,7 +6,7 @@ interface Menu {
   description: string;
 }
 
-const MenuList = () => {
+const MenuForm = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,18 +35,20 @@ const MenuList = () => {
   }
 
   return (
-    <div>
-      <h1>Menus from MenuList</h1>
-      <ul>
-        {menus.map((menu) => (
-          <li key={menu.id}>
-            <h2>{menu.name}</h2>
-            <p>{menu.description}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="container mx-auto py-4">
+      <div className="prose">
+        <h1>Menus from MenuForm</h1>
+        <ul>
+          {menus.map((menu) => (
+            <li key={menu.id}>
+              <h2>{menu.name}</h2>
+              <p>{menu.description}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
 
-export default MenuList;
+export default MenuForm;
