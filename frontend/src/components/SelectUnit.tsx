@@ -5,9 +5,9 @@ export default function SelectUnit() {
       <input
         type="text"
         placeholder="Ingredient"
-        className="input input-bordered input-success w-full max-w-xs m-4"
+        className="input input-bordered input-success w-full max-w-md m-4"
       />
-      <select className="select select-success w-full max-w-xs m-4">
+      <select className="select select-success w-full max-w-md m-4">
         <option disabled selected>
           Unit
         </option>
@@ -16,6 +16,8 @@ export default function SelectUnit() {
         <option>ml</option>
         <option>cl</option>
         <option>dl</option>
+        <option>tsp</option>
+        <option>tbsp</option>
       </select>
     </>
   );
