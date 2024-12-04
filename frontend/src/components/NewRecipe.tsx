@@ -1,9 +1,9 @@
-import RecepieForm from "./RecepieForm";
+import RecipeForm from "./RecipeForm";
 
 export default function NewRecepie() {
   return (
     <div>
-      <RecepieForm />
+      <RecipeForm />
     </div>
   );
 }

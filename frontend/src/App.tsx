@@ -1,33 +1,19 @@
 import Home from "./components/Home";
-import RecepieForm from "./components/RecepieForm";
-
-import {
-  createHashRouter,
-  Link,
-  Outlet,
-  RouterProvider,
-} from "react-router-dom";
+import Navbar from "./components/Navbar";
+import RecipeForm from "./components/RecipeForm";
+import { createHashRouter, Outlet, RouterProvider } from "react-router-dom";
 
 function App() {
   const router = createHashRouter([
     {
       children: [
         { element: <Home />, path: "/" },
-        { element: <RecepieForm />, path: "/addRecipie" },
+        { element: <RecipeForm />, path: "/addRecipe" },
       ],
       element: (
         <>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Hem</Link>
-              </li>
-              <li>
-                <Link to="/addRecipie">Add recipie</Link>
-              </li>
-            </ul>
-          </nav>
           <main>
+            <Navbar />
             <Outlet />
           </main>
         </>
