@@ -9,25 +9,36 @@ export default function Navbar() {
         <div className="flex justify-center">
           <ul className=" flex flex-row m-4">
             <li className="m-4">
-              <Link className="font-bold text-dark-green text-xl" to="/">
+              <Link
+                role="button"
+                className="btn m-1 text-dark-green text-xl"
+                to="/"
+              >
                 Hem
               </Link>
             </li>
             <li className="m-4">
               <Link
-                className="font-bold text-dark-green text-xl"
-                to="/addRecipe">
+                role="button"
+                className="btn m-1 text-dark-green text-xl"
+                to="/addRecipe"
+              >
                 Add recipe
               </Link>
             </li>
             {/* Test dropdown */}
-            <div className="dropdown">
-              <div tabIndex={0} role="button" className="btn m-1">
+            <div className="dropdown m-4">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn m-1 text-dark-green text-xl "
+              >
                 Menus
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+              >
                 <li>
                   <Link className="text-dark-green" to="/menus">
                     See menus
