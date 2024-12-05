@@ -2,5 +2,11 @@
   "compilerOptions": {
     "jsx": "preserve"
   },
-  "include": ["**/*.ts", "**/*.tsx, cypress.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx, cypress.d.ts",
+    "support/component.{js, jsx, ts, tsx}",
+    "src",
+    "cypress.d.ts"
+  ]
 }
