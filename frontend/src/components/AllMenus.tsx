@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 interface Menu {
   id: number;
-  recipe_name: string;
-  meal_plan_name: string;
+  menu_name: string;
+  recipe: string;
 }
 
-const MenuForm = () => {
+const AllMenus = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,23 +34,19 @@ const MenuForm = () => {
     return <p>Error: {error}</p>;
   }
 
+  if (menus.length === 0) {
+    return <p>No menus found</p>;
+  }
+
   return (
     <div className="container mx-auto py-4">
       <div className="prose">
         <h1>Menus</h1>
-        {/* <ul>
-          {menus.map((menu) => (
-            <li key={menu.id}>
-              <h2>{menu.name}</h2>
-              <p>{menu.description}</p>
-            </li>
-          ))}
-        </ul> */}
+        <h2>{menus[0].menu_name}</h2>
         <ul>
           {menus.map((menu) => (
             <li key={menu.id}>
-              <p>{menu.meal_plan_name}</p>
-              <p>{menu.recipe_name}</p>
+              <p>{menu.recipe}</p>
             </li>
           ))}
         </ul>
@@ -59,4 +55,4 @@ const MenuForm = () => {
   );
 };
 
-export default MenuForm;
+export default AllMenus;
