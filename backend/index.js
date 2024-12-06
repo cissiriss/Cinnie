@@ -99,7 +99,7 @@ app.get("/api/menus", function (request, response) { return __awaiter(void 0, vo
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query("SELECT mp.name AS meal_plan_name, r.name AS recipe_name FROM meal_plan_recipes mpr JOIN recipes r ON mpr.recipe_id = r.id JOIN meal_plans mp ON mpr.meal_plan_id = mp.id WHERE mpr.meal_plan_id = 1")];
+                return [4 /*yield*/, client.query("SELECT m.menu_name AS Menu_Name, r.recipe_name AS Recipe FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id WHERE mr.menu_id = 3")];
             case 1:
                 rows = (_a.sent()).rows;
                 response.status(200).json(rows);
