@@ -1,5 +1,4 @@
-import React from "react";
-import Home from "../../../frontend/src/components/Home";
+import Home from "../../src/components/Home";
 
 describe("Home", () => {
   it("should render", () => {
