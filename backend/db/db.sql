@@ -1,74 +1,66 @@
-
-
-CREATE TABLE recipes (
+CREATE TABLE recipe (
     id SERIAL PRIMARY KEY,
-
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
+    recipe_name VARCHAR(255) NOT NULL,
     instructions TEXT,
-    prep_time INTEGER,
     cook_time INTEGER,
     servings INTEGER,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE units (
+CREATE TABLE unit (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50)
+    unit_name VARCHAR(50)
 );
 
 CREATE TABLE quantity (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50)
-)
-
-CREATE TABLE ingredients (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    quantity_value VARCHAR(50)
 );
 
-CREATE TABLE recipe_ingredients (
+CREATE TABLE ingredient (
     id SERIAL PRIMARY KEY,
-    recipe_id INTEGER REFERENCES recipes(id),
-    ingredient_id INTEGER REFERENCES ingredients(id),
-    quantity_id INTEGER REFERENCES quantity(id),
-    unit_id INTEGER REFERENCES units(id),
+    ingredient VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE menus (
+CREATE TABLE menu (
     id SERIAL PRIMARY KEY,
-
-    name VARCHAR(255) NOT NULL,
+    menu_name VARCHAR(255) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE menus_recipes (
+CREATE TABLE recipe_ingredient (
     id SERIAL PRIMARY KEY,
-    menu_id INTEGER REFERENCES menus(id),
-    recipe_id INTEGER REFERENCES recipes(id),
-    meal_time VARCHAR(50),
+    recipe_id INTEGER REFERENCES recipe(id) ON DELETE CASCADE,
+    ingredient_id INTEGER REFERENCES ingredient(id) ON DELETE CASCADE,
+    quantity_id INTEGER REFERENCES quantity(id),
+    unit_id INTEGER REFERENCES unit(id)
+);
+
+CREATE TABLE menu_recipe (
+    id SERIAL PRIMARY KEY,
+    menu_id INTEGER REFERENCES menu(id) ON DELETE CASCADE,
+    recipe_id INTEGER REFERENCES recipe(id) ON DELETE CASCADE,
     date DATE NOT NULL
 );
 
-CREATE TABLE shopping_lists (
+CREATE TABLE shopping_list (
     id SERIAL PRIMARY KEY,
-    name INTEGER REFERENCES menus(name),
-    menu_id INTEGER REFERENCES menus(id),
+    menu_id INTEGER REFERENCES menu(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE shopping_list_items (
+CREATE TABLE shopping_list_item (
     id SERIAL PRIMARY KEY,
-    shopping_list_id INTEGER REFERENCES shopping_lists(id),
-    ingredient_id INTEGER REFERENCES ingredients(id),
-    quantity_id INTEGER REFERENCES quantity(id),
+    shopping_list_id INTEGER REFERENCES shopping_list(id) ON DELETE CASCADE,
+    ingredient_id INTEGER REFERENCES ingredient(id) ON DELETE SET NULL,
+    quantity_id INTEGER REFERENCES quantity(id) ON DELETE SET NULL,
     is_checked BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE favorites (
+CREATE TABLE favorite (
     id SERIAL PRIMARY KEY,
-    recipe_id INTEGER REFERENCES recipes(id),
+    recipe_id INTEGER REFERENCES recipe(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT NOW()
 );
