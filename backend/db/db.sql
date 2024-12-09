@@ -1,7 +1,9 @@
-CREATE TABLE recipe (
+CREATE TABLE recipes (
     id SERIAL PRIMARY KEY,
     recipe_name VARCHAR(255) NOT NULL,
+    description TEXT,
     instructions TEXT,
+    prep_time INTEGER,
     cook_time INTEGER,
     servings INTEGER,
     created_at TIMESTAMP DEFAULT NOW()
@@ -17,7 +19,7 @@ CREATE TABLE quantity (
     quantity_value VARCHAR(50)
 );
 
-CREATE TABLE ingredient (
+CREATE TABLE ingredients (
     id SERIAL PRIMARY KEY,
     ingredient VARCHAR(255) NOT NULL
 );
