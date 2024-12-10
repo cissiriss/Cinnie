@@ -1,7 +1,14 @@
-export default function SelectUnit() {
+import { useFormContext } from "react-hook-form";
+import { RecipeType } from "../types/types";
+
+export default function SelectUnit({ index }: { index: number }) {
+  const { register } = useFormContext<RecipeType>();
   return (
     <>
-      <select className="select select-success m-4">
+      <select
+        {...register(`ingredients.${index}.unit`)}
+        className="select select-success m-4"
+      >
         <option disabled selected>
           Unit
         </option>
