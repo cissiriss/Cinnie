@@ -62,16 +62,8 @@ app.post("/api/recipies/new", async (req, res) => {
       ingredients,
     } = req.body;
 
-    // if (!recipe_name || !ingredients || ingredients.length === 0) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "Recipe name and ingredients are required." });
-    // }
-
-    // Start a transaction
     await client.query("BEGIN");
 
-    // Insert recipe
     const recipeQuery = `
       INSERT INTO recipes (recipe_name, description, instructions, prep_time, cook_time, servings)
       VALUES ($1, $2, $3, $4, $5, $6)
@@ -96,7 +88,6 @@ app.post("/api/recipies/new", async (req, res) => {
       const ingredientQuery = `
         INSERT INTO ingredients (ingredient)
         VALUES ($1)
-        ON CONFLICT (ingredient) DO NOTHING
         RETURNING id;
       `;
       const ingredientResult = await client.query(ingredientQuery, [

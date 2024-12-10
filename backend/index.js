@@ -142,20 +142,8 @@ app.post("/api/recipies/new", function (req, res) { return __awaiter(void 0, voi
             case 0:
                 _h.trys.push([0, 18, , 19]);
                 _a = req.body, recipe_name = _a.recipe_name, description = _a.description, instructions = _a.instructions, prep_time = _a.prep_time, cook_time = _a.cook_time, servings = _a.servings, ingredients = _a.ingredients;
-                // if (!recipe_name || !ingredients || ingredients.length === 0) {
-                //   return res
-                //     .status(400)
-                //     .json({ error: "Recipe name and ingredients are required." });
-                // }
-                // Start a transaction
                 return [4 /*yield*/, client.query("BEGIN")];
             case 1:
-                // if (!recipe_name || !ingredients || ingredients.length === 0) {
-                //   return res
-                //     .status(400)
-                //     .json({ error: "Recipe name and ingredients are required." });
-                // }
-                // Start a transaction
                 _h.sent();
                 recipeQuery = "\n      INSERT INTO recipes (recipe_name, description, instructions, prep_time, cook_time, servings)\n      VALUES ($1, $2, $3, $4, $5, $6)\n      RETURNING id;\n    ";
                 recipeValues = [
@@ -176,7 +164,7 @@ app.post("/api/recipies/new", function (req, res) { return __awaiter(void 0, voi
                 if (!(_i < ingredients_1.length)) return [3 /*break*/, 17];
                 ingredient = ingredients_1[_i];
                 ingredient_name = ingredient.ingredient_name, quantity_value = ingredient.quantity_value, unit_name = ingredient.unit_name;
-                ingredientQuery = "\n        INSERT INTO ingredients (ingredient)\n        VALUES ($1)\n        ON CONFLICT (ingredient) DO NOTHING\n        RETURNING id;\n      ";
+                ingredientQuery = "\n        INSERT INTO ingredients (ingredient)\n        VALUES ($1)\n        RETURNING id;\n      ";
                 return [4 /*yield*/, client.query(ingredientQuery, [
                         ingredient_name,
                     ])];
