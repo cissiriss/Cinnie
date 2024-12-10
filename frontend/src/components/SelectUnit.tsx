@@ -1,13 +1,7 @@
 export default function SelectUnit() {
   return (
     <>
-      <h3>Ingredients</h3>
-      <input
-        type="text"
-        placeholder="Ingredient"
-        className="input input-bordered input-success w-full max-w-md m-4"
-      />
-      <select className="select select-success w-full max-w-md m-4">
+      <select className="select select-success m-4">
         <option disabled selected>
           Unit
         </option>
