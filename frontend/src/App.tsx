@@ -5,6 +5,8 @@ import NewMenu from "./components/NewMenu";
 import { createHashRouter, Outlet, RouterProvider } from "react-router-dom";
 import AllMenus from "./components/AllMenus";
 
+import RecipeFormProvider from "./providers/FormProvider";
+
 function App() {
   const router = createHashRouter([
     {
@@ -17,8 +19,10 @@ function App() {
       element: (
         <>
           <main>
-            <Navbar />
-            <Outlet />
+            <RecipeFormProvider>
+              <Navbar />
+              <Outlet />
+            </RecipeFormProvider>
           </main>
         </>
       ),
