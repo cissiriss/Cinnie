@@ -3,6 +3,8 @@
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 
 import { RecipeType } from "../types/types";
+import SelectUnit from "./SelectUnit";
+import Quantity from "./Quantity";
 
 export default function RecepieForm() {
   const {
@@ -23,17 +25,18 @@ export default function RecepieForm() {
   };
 
   const onSubmit: SubmitHandler<RecipeType> = async (data) => {
-    console.log(data);
+    console.log("submit", data);
+    console.log("Json", JSON.stringify(data));
 
-    // await fetch("/api/recipe/new", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     data,
-    //   }),
-    // });
+    await fetch("http://localhost:3000/api/recipe/new/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data,
+      }),
+    });
   };
 
   return (
@@ -88,13 +91,8 @@ export default function RecepieForm() {
                 placeholder="Ingredient"
                 className="input input-bordered input-success m-4"
               />
-
-              <input
-                {...register(`ingredients.${index}.quantity`)}
-                type="text"
-                placeholder="Quantity"
-                className="input input-bordered input-success max-w-xs"
-              />
+              <SelectUnit index={index} />
+              <Quantity index={index} />
             </div>
           ))}
 

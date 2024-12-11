@@ -1,4 +1,3 @@
--- Skapa tabeller
 
 CREATE TABLE recipe (
     id SERIAL PRIMARY KEY,
