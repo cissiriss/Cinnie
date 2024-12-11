@@ -41,7 +41,7 @@ app.get("/api/menus", async (request, response) => {
 
 app.get("/api/recipes", async (req, res) => {
   try {
-    const { rows } = await client.query("SELECT * FROM recipes");
+    const { rows } = await client.query("SELECT * FROM recipe");
     res.json(rows);
   } catch (error) {
     console.error("Error fetching recipes:", error);
@@ -49,110 +49,96 @@ app.get("/api/recipes", async (req, res) => {
   }
 });
 
+interface Recipe {
+  recipe_name: string;
+  description: string;
+  instructions: string;
+  prep_time: string;
+  cook_time: string;
+  servings: string;
+}
+
+interface Ingredient {
+  ingredient_name: string;
+  unit: string;
+  quantity: string;
+}
+
+interface FormInputData {
+  recipe: Recipe;
+  ingredients: Ingredient[];
+}
+
 // POST endpoint to add a recipe
-app.post("/api/recipies/new", async (req, res) => {
-  try {
-    const {
-      recipe_name,
-      description,
-      instructions,
-      prep_time,
-      cook_time,
-      servings,
-      ingredients,
-    } = req.body;
 
-    await client.query("BEGIN");
+app.post(
+  "/api/recipe/new/",
+  async (req: express.Request<FormInputData>, res) => {
+    const { recipe, ingredients } = req.body.data;
+    try {
+      // Begin a database transaction
+      await client.query("BEGIN");
 
-    const recipeQuery = `
-      INSERT INTO recipes (recipe_name, description, instructions, prep_time, cook_time, servings)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id;
+      // Insert the recipe into the recipes table
+      const recipeInsertQuery = `
+      INSERT INTO recipe (recipe_name, description, instructions, prep_time, cook_time, servings)
+      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
     `;
-    const recipeValues = [
-      recipe_name,
-      description || null,
-      instructions || null,
-      prep_time || null,
-      cook_time || null,
-      servings || null,
-    ];
-    const recipeResult = await client.query(recipeQuery, recipeValues);
-    const recipeId = recipeResult.rows[0].id;
+      const recipeValues = [
+        recipe.recipe_name,
+        recipe.description,
+        recipe.instructions,
+        parseInt(recipe.prep_time, 10),
+        parseInt(recipe.cook_time, 10),
+        parseInt(recipe.servings, 10),
+      ];
 
-    // Insert ingredients, units, and quantities
-    for (const ingredient of ingredients) {
-      const { ingredient_name, quantity_value, unit_name } = ingredient;
+      const recipeResult = await client.query(recipeInsertQuery, recipeValues);
+      const recipeId = recipeResult.rows[0].id;
 
-      // Insert ingredient
-      const ingredientQuery = `
-        INSERT INTO ingredients (ingredient)
-        VALUES ($1)
-        RETURNING id;
-      `;
-      const ingredientResult = await client.query(ingredientQuery, [
-        ingredient_name,
-      ]);
-      const ingredientId =
-        ingredientResult.rows[0]?.id || // Use the returned ID if inserted
-        (
-          await client.query(
-            "SELECT id FROM ingredients WHERE ingredient = $1",
-            [ingredient_name]
-          )
-        ).rows[0].id; // Fetch ID if the ingredient already exists
-
-      // Insert unit (if applicable)
-      let unitId = null;
-      if (unit_name) {
-        const unitQuery = `
-          INSERT INTO unit (unit_name)
-          VALUES ($1)
-          ON CONFLICT (unit_name) DO NOTHING
-          RETURNING id;
-        `;
-        const unitResult = await client.query(unitQuery, [unit_name]);
-        unitId =
-          unitResult.rows[0]?.id ||
-          (
-            await client.query("SELECT id FROM unit WHERE unit_name = $1", [
-              unit_name,
-            ])
-          ).rows[0].id;
-      }
-
-      // Insert quantity (if applicable)
-      let quantityId = null;
-      if (quantity_value) {
-        const quantityQuery = `
-          INSERT INTO quantity (quantity_value)
-          VALUES ($1)
-          ON CONFLICT (quantity_value) DO NOTHING
-          RETURNING id;
-        `;
-        const quantityResult = await client.query(quantityQuery, [
-          quantity_value,
+      // Process each ingredient
+      for (const ingredient of ingredients) {
+        // Insert ingredient into ingredients table
+        const ingredientInsertQuery = `
+              INSERT INTO ingredient (ingredient)
+              VALUES ($1) RETURNING *
+            `;
+        const ingredientResult = await client.query(ingredientInsertQuery, [
+          ingredient.ingredient_name,
         ]);
-        quantityId =
-          quantityResult.rows[0]?.id ||
-          (
-            await client.query(
-              "SELECT id FROM quantity WHERE quantity_value = $1",
-              [quantity_value]
-            )
-          ).rows[0].id;
+        const ingredientId = ingredientResult.rows[0].id;
+
+        // Insert or retrieve the unit
+        const unitInsertQuery = `
+              INSERT INTO unit (unit_name)
+              VALUES ($1) RETURNING *
+            `;
+        const unitResult = await client.query(unitInsertQuery, [
+          ingredient.unit,
+        ]);
+        const unitId = unitResult.rows[0]?.id;
+
+        // Insert or retrieve the quantity
+        const quantityInsertQuery = `
+              INSERT INTO quantity (quantity_value)
+              VALUES ($1) RETURNING *
+            `;
+        const quantityResult = await client.query(quantityInsertQuery, [
+          ingredient.quantity,
+        ]);
+        const quantityId = quantityResult.rows[0]?.id;
       }
 
-      // Commit the transaction
       await client.query("COMMIT");
 
       res.status(201).json({ message: "Recipe added successfully", recipeId });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "An error occurred while saving the recipe" });
     }
-  } catch (error) {
-    console.error("Error adding recipe:", error);
-    res.status(500).json({ error: "Internal Server Error" });
   }
-});
+);
 
 const port = 3000;
 

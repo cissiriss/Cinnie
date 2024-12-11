@@ -1,4 +1,4 @@
-CREATE TABLE recipes (
+CREATE TABLE recipe (
     id SERIAL PRIMARY KEY,
     recipe_name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -19,7 +19,7 @@ CREATE TABLE quantity (
     quantity_value VARCHAR(50)
 );
 
-CREATE TABLE ingredients (
+CREATE TABLE ingredient (
     id SERIAL PRIMARY KEY,
     ingredient VARCHAR(255) NOT NULL
 );
