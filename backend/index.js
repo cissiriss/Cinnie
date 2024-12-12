@@ -57,18 +57,20 @@ client.connect();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-// app.get("/api/menus", async (request, response) => {
-//   try {
-//     const { rows } = await client.query("SELECT * FROM menus");
-//     response.status(200).json(rows);
-//   } catch (error) {
-//     console.error("Error fetching menus:", error);
-//     response.status(500).send("Server error");
-//   }
-// });
 app.get("/api/menus", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { rows } = yield client.query("SELECT m.menu_name AS Menu_Name, r.recipe_name AS Recipe FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id WHERE mr.menu_id = 3");
+        response.status(200).json(rows);
+    }
+    catch (error) {
+        console.error("Error fetching menus:", error);
+        response.status(500).send("Server error");
+    }
+}));
+app.get("/api/shoppinglist/:menuId", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const menuId = request.params;
+    try {
+        const { rows } = yield client.query("SELECT i.ingredient AS ingredient, q.quantity_value AS quantity, u.unit_name AS unit FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id JOIN recipe_ingredient ri ON r.id = ri.recipe_id JOIN ingredient i ON ri.ingredient_id = i.id JOIN quantity q ON ri.quantity_id = q.id JOIN unit u ON ri.unit_id = u.id WHERE mr.id = 1 ORDER BY i.ingredient");
         response.status(200).json(rows);
     }
     catch (error) {
