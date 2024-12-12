@@ -68,7 +68,7 @@ app.use((0, cors_1.default)());
 // });
 app.get("/api/menus", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { rows } = yield client.query("SELECT m.menu_name AS Menu_Name, r.recipe_name AS Recipe FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id WHERE mr.menu_id = 3");
+        const { rows } = yield client.query("SELECT m.menu_name AS Menu_Name, r.recipe_name AS Recipe FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id WHERE mr.menu_id = 1");
         response.status(200).json(rows);
     }
     catch (error) {
