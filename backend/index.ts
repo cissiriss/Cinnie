@@ -74,7 +74,7 @@ interface FormInputData {
 app.post(
   "/api/recipe/new/",
   async (req: express.Request<FormInputData>, res) => {
-    const { recipe, ingredients } = req.body.data;
+    const { recipe, ingredients } = req.body;
     try {
       // Begin a database transaction
       await client.query("BEGIN");

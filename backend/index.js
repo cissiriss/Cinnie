@@ -89,7 +89,7 @@ app.get("/api/recipes", (req, res) => __awaiter(void 0, void 0, void 0, function
 // POST endpoint to add a recipe
 app.post("/api/recipe/new/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
-    const { recipe, ingredients } = req.body.data;
+    const { recipe, ingredients } = req.body;
     try {
         // Begin a database transaction
         yield client.query("BEGIN");
