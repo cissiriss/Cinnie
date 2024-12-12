@@ -30,7 +30,7 @@ app.use(cors());
 app.get("/api/menus", async (request, response) => {
   try {
     const { rows } = await client.query(
-      "SELECT m.menu_name AS Menu_Name, r.recipe_name AS Recipe FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id WHERE mr.menu_id = 3"
+      "SELECT m.menu_name AS Menu_Name, r.recipe_name AS Recipe FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id WHERE mr.menu_id = 1"
     );
     response.status(200).json(rows);
   } catch (error) {
