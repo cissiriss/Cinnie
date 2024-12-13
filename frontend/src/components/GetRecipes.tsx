@@ -3,18 +3,10 @@ import { useEffect } from "react";
 export default function GetRecipes() {
   useEffect(() => {
     const fetchRecipes = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/recipes/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch menus");
-        }
-        const data = await response.json();
-        console.log(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          console.error(err.message);
-        }
-      }
+      const response = await fetch("http://localhost:3000/api/recipes/");
+
+      const data = await response.json();
+      console.log("fetched recepies", data);
     };
     fetchRecipes();
   });

@@ -60,8 +60,8 @@ interface Recipe {
 
 interface Ingredient {
   ingredient_name: string;
-  unit: string;
-  quantity: string;
+  unit_name: string;
+  quantity_name: string;
 }
 
 interface FormInputData {
@@ -76,10 +76,8 @@ app.post(
   async (req: express.Request<FormInputData>, res) => {
     const { recipe, ingredients } = req.body;
     try {
-      // Begin a database transaction
       await client.query("BEGIN");
 
-      // Insert the recipe into the recipes table
       const recipeInsertQuery = `
       INSERT INTO recipe (recipe_name, description, instructions, prep_time, cook_time, servings)
       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
@@ -96,44 +94,55 @@ app.post(
       const recipeResult = await client.query(recipeInsertQuery, recipeValues);
       const recipeId = recipeResult.rows[0].id;
 
-      // Process each ingredient
+      const ingredientsResult = [];
+
       for (const ingredient of ingredients) {
-        // Insert ingredient into ingredients table
         const ingredientInsertQuery = `
-              INSERT INTO ingredient (ingredient)
+              INSERT INTO ingredient (ingredient_name)
               VALUES ($1) RETURNING *
             `;
+
         const ingredientResult = await client.query(ingredientInsertQuery, [
           ingredient.ingredient_name,
         ]);
-        const ingredientId = ingredientResult.rows[0].id;
 
-        // Insert or retrieve the unit
         const unitInsertQuery = `
               INSERT INTO unit (unit_name)
               VALUES ($1) RETURNING *
             `;
-        const unitResult = await client.query(unitInsertQuery, [
-          ingredient.unit,
-        ]);
-        const unitId = unitResult.rows[0]?.id;
 
-        // Insert or retrieve the quantity
+        const unitResult = await client.query(unitInsertQuery, [
+          ingredient.unit_name,
+        ]);
+
         const quantityInsertQuery = `
               INSERT INTO quantity (quantity_value)
               VALUES ($1) RETURNING *
             `;
         const quantityResult = await client.query(quantityInsertQuery, [
-          ingredient.quantity,
+          ingredient.quantity_name,
         ]);
-        const quantityId = quantityResult.rows[0]?.id;
+
+        ingredientsResult.push({
+          ingredient: ingredientResult.rows[0],
+          unit: unitResult.rows[0],
+          quantity: quantityResult.rows[0],
+        });
       }
+
+      const result = {
+        recipe: recipeResult.rows[0],
+        ingredients: ingredientsResult,
+      };
 
       await client.query("COMMIT");
 
-      res.status(201).json({ message: "Recipe added successfully", recipeId });
+      res.status(201);
+
+      res.send(result);
     } catch (error) {
       res
+
         .status(500)
         .json({ error: "An error occurred while saving the recipe" });
     }

@@ -88,12 +88,9 @@ app.get("/api/recipes", (req, res) => __awaiter(void 0, void 0, void 0, function
 }));
 // POST endpoint to add a recipe
 app.post("/api/recipe/new/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
     const { recipe, ingredients } = req.body;
     try {
-        // Begin a database transaction
         yield client.query("BEGIN");
-        // Insert the recipe into the recipes table
         const recipeInsertQuery = `
       INSERT INTO recipe (recipe_name, description, instructions, prep_time, cook_time, servings)
       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
@@ -108,38 +105,42 @@ app.post("/api/recipe/new/", (req, res) => __awaiter(void 0, void 0, void 0, fun
         ];
         const recipeResult = yield client.query(recipeInsertQuery, recipeValues);
         const recipeId = recipeResult.rows[0].id;
-        // Process each ingredient
+        const ingredientsResult = [];
         for (const ingredient of ingredients) {
-            // Insert ingredient into ingredients table
             const ingredientInsertQuery = `
-              INSERT INTO ingredient (ingredient)
+              INSERT INTO ingredient (ingredient_name)
               VALUES ($1) RETURNING *
             `;
             const ingredientResult = yield client.query(ingredientInsertQuery, [
                 ingredient.ingredient_name,
             ]);
-            const ingredientId = ingredientResult.rows[0].id;
-            // Insert or retrieve the unit
             const unitInsertQuery = `
               INSERT INTO unit (unit_name)
               VALUES ($1) RETURNING *
             `;
             const unitResult = yield client.query(unitInsertQuery, [
-                ingredient.unit,
+                ingredient.unit_name,
             ]);
-            const unitId = (_a = unitResult.rows[0]) === null || _a === void 0 ? void 0 : _a.id;
-            // Insert or retrieve the quantity
             const quantityInsertQuery = `
               INSERT INTO quantity (quantity_value)
               VALUES ($1) RETURNING *
             `;
             const quantityResult = yield client.query(quantityInsertQuery, [
-                ingredient.quantity,
+                ingredient.quantity_name,
             ]);
-            const quantityId = (_b = quantityResult.rows[0]) === null || _b === void 0 ? void 0 : _b.id;
+            ingredientsResult.push({
+                ingredient: ingredientResult.rows[0],
+                unit: unitResult.rows[0],
+                quantity: quantityResult.rows[0],
+            });
         }
+        const result = {
+            recipe: recipeResult.rows[0],
+            ingredients: ingredientsResult,
+        };
         yield client.query("COMMIT");
-        res.status(201).json({ message: "Recipe added successfully", recipeId });
+        res.status(201);
+        res.send(result);
     }
     catch (error) {
         res
