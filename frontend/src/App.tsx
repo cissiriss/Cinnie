@@ -4,7 +4,7 @@ import NewRecipe from "./components/NewRecipe";
 import NewMenu from "./components/NewMenu";
 import { createHashRouter, Outlet, RouterProvider } from "react-router-dom";
 import AllMenus from "./components/AllMenus";
-
+import GetRecipes from "./components/GetRecipes";
 import RecipeFormProvider from "./providers/FormProvider";
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
         { element: <NewRecipe />, path: "/addRecipe" },
         { element: <AllMenus />, path: "/menus" },
         { element: <NewMenu />, path: "/addMenu" },
+        { element: <GetRecipes />, path: "/recipes" },
       ],
       element: (
         <>

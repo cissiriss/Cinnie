@@ -3,9 +3,9 @@ import logo from "../assets/Header.png";
 
 export default function Navbar() {
   return (
-    <div className="container flex flex-col items-center w-full">
-      <nav>
-        <img src={logo} alt="Header" sizes="80" className="rounded-3xl mt-12" />
+    <div>
+      <nav className="container flex flex-col items-center w-full">
+        <img src={logo} alt="Header" sizes="80" className="rounded-3xl m-4" />
         <div className="flex justify-center">
           <ul className=" flex flex-row m-4">
             <li className="m-4">
@@ -26,7 +26,15 @@ export default function Navbar() {
                 Add recipe
               </Link>
             </li>
-            {/* Test dropdown */}
+            <li className="m-4">
+              <Link
+                role="button"
+                className="btn m-1 text-dark-green text-xl"
+                to="/recipes"
+              >
+                All Recipes
+              </Link>
+            </li>
             <div className="dropdown m-4">
               <div
                 tabIndex={0}
