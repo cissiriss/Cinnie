@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ShoppingList from "./ShoppingList";
 
 interface Menu {
   id: number;
@@ -9,11 +10,12 @@ interface Menu {
 const AllMenus = () => {
   const [menus, setMenus] = useState<Menu[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [selectedMenuId, setSelectedMenuId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchMenus = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/menus");
+        const response = await fetch("/api/menus");
         if (!response.ok) {
           throw new Error("Failed to fetch menus");
         }
@@ -38,18 +40,28 @@ const AllMenus = () => {
     return <p>No menus found</p>;
   }
 
+  const viewShoppingList = async (menuId: number) => {
+    setSelectedMenuId(menuId);
+  };
+
   return (
     <div className="container mx-auto py-4">
       <div className="prose">
         <h1>Menus</h1>
-        <h2>{menus[0].menu_name}</h2>
-        <ul>
-          {menus.map((menu) => (
-            <li key={menu.id}>
-              <p>{menu.recipe}</p>
-            </li>
-          ))}
-        </ul>
+        {menus.map((menu) => (
+          <div key={menu.id} className="menu-item">
+            <h2>{menu.menu_name}</h2>
+            <ul>
+              <li>{menu.recipe}</li>
+            </ul>
+            <button
+              onClick={() => viewShoppingList(menu.id)}
+              className="btn btn-neutral m-4 w-full max-w-xs">
+              Create shopping list
+            </button>
+          </div>
+        ))}
+        {selectedMenuId && <ShoppingList menuId={selectedMenuId} />}{" "}
       </div>
     </div>
   );

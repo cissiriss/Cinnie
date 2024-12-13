@@ -1,9 +1,8 @@
+
 CREATE TABLE recipe (
     id SERIAL UNIQUE PRIMARY KEY,
     recipe_name VARCHAR(255) NOT NULL,
-    description TEXT,
     instructions TEXT,
-    prep_time INTEGER,
     cook_time INTEGER,
     servings INTEGER,
     created_at TIMESTAMP DEFAULT NOW()
@@ -100,6 +99,41 @@ INSERT INTO quantity (quantity_value) VALUES
 
 -- 4. Lägg till recept
 INSERT INTO recipe (recipe_name, instructions, cook_time, servings) VALUES 
+
+-- Fyll på med dålig fejkdata
+
+-- 1. Skapa ingredienser
+INSERT INTO ingredient (ingredient) VALUES
+('Flour'),
+('Sugar'),
+('Butter'),
+('Eggs'),
+('Milk'),
+('Salt'),
+('Tomatoes'),
+('Cheese'),
+('Chicken'),
+('Rice');
+
+-- 2. Skapa enheter
+INSERT INTO unit (unit_name) VALUES
+('grams'),
+('cups'),
+('tablespoons'),
+('pieces'),
+('liters');
+
+-- 3. Skapa kvantiteter
+INSERT INTO quantity (quantity_value) VALUES
+('100'),
+('200'),
+('1'),
+('2'),
+('500');
+
+-- 4. Lägg till recept
+INSERT INTO recipe (recipe_name, instructions, cook_time, servings) VALUES
+
 ('Pancakes', 'Mix and fry on pan.', 15, 4),
 ('Spaghetti Bolognese', 'Cook spaghetti and sauce.', 30, 4),
 ('Chicken Curry', 'Cook chicken with curry sauce.', 40, 4),
@@ -138,6 +172,7 @@ INSERT INTO recipe_ingredient (recipe_id, ingredient_id, quantity_id, unit_id) V
 
 -- 6. Skapa menyer
 INSERT INTO menu (menu_name, start_date, end_date) VALUES 
+
 ('Weekly Menu 1', '2024-12-09', '2024-12-15'),
 ('Weekly Menu 2', '2024-12-16', '2024-12-22'),
 ('Weekly Menu 3', '2024-12-23', '2024-12-29');
@@ -160,6 +195,7 @@ INSERT INTO menu_recipe (menu_id, recipe_id, date) VALUES
 (3, 9, '2024-12-25'),
 (3, 10, '2024-12-26');
 
+
 -- Drop all tables in the public schema
 DO
 $$
@@ -177,4 +213,6 @@ BEGIN
     END LOOP;
 END
 $$;
+
+
 
