@@ -1,6 +1,6 @@
 
 CREATE TABLE recipe (
-    id SERIAL PRIMARY KEY,
+    id SERIAL UNIQUE PRIMARY KEY,
     recipe_name VARCHAR(255) NOT NULL,
     instructions TEXT,
     cook_time INTEGER,
@@ -20,7 +20,7 @@ CREATE TABLE quantity (
 
 CREATE TABLE ingredient (
     id SERIAL PRIMARY KEY,
-    ingredient VARCHAR(255) NOT NULL
+    ingredient_name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE menu (
@@ -66,6 +66,39 @@ CREATE TABLE favorite (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Fyll på med dummy data
+
+-- 1. Skapa ingredienser
+INSERT INTO ingredient (ingredient_name) VALUES 
+('Flour'), 
+('Sugar'), 
+('Butter'), 
+('Eggs'), 
+('Milk'), 
+('Salt'), 
+('Tomatoes'), 
+('Cheese'), 
+('Chicken'), 
+('Rice');
+
+-- 2. Skapa enheter
+INSERT INTO unit (unit_name) VALUES 
+('grams'), 
+('cups'), 
+('tablespoons'), 
+('pieces'), 
+('liters');
+
+-- 3. Skapa kvantiteter
+INSERT INTO quantity (quantity_value) VALUES 
+('100'), 
+('200'), 
+('1'), 
+('2'), 
+('500');
+
+-- 4. Lägg till recept
+INSERT INTO recipe (recipe_name, instructions, cook_time, servings) VALUES 
 
 -- Fyll på med dålig fejkdata
 
@@ -100,6 +133,7 @@ INSERT INTO quantity (quantity_value) VALUES
 
 -- 4. Lägg till recept
 INSERT INTO recipe (recipe_name, instructions, cook_time, servings) VALUES
+
 ('Pancakes', 'Mix and fry on pan.', 15, 4),
 ('Spaghetti Bolognese', 'Cook spaghetti and sauce.', 30, 4),
 ('Chicken Curry', 'Cook chicken with curry sauce.', 40, 4),
@@ -137,7 +171,8 @@ INSERT INTO recipe_ingredient (recipe_id, ingredient_id, quantity_id, unit_id) V
 (5, 8, 1, 1); -- Cheese, 100 grams
 
 -- 6. Skapa menyer
-INSERT INTO menu (menu_name, start_date, end_date) VALUES
+INSERT INTO menu (menu_name, start_date, end_date) VALUES 
+
 ('Weekly Menu 1', '2024-12-09', '2024-12-15'),
 ('Weekly Menu 2', '2024-12-16', '2024-12-22'),
 ('Weekly Menu 3', '2024-12-23', '2024-12-29');
@@ -159,3 +194,25 @@ INSERT INTO menu_recipe (menu_id, recipe_id, date) VALUES
 (3, 8, '2024-12-24'),
 (3, 9, '2024-12-25'),
 (3, 10, '2024-12-26');
+
+
+-- Drop all tables in the public schema
+DO
+$$
+DECLARE
+    tbl RECORD;
+BEGIN
+    -- Loop through all tables in the public schema
+    FOR tbl IN
+        SELECT tablename
+        FROM pg_tables
+        WHERE schemaname = 'public'
+    LOOP
+        -- Dynamically drop each table
+        EXECUTE FORMAT('DROP TABLE IF EXISTS %I CASCADE;', tbl.tablename);
+    END LOOP;
+END
+$$;
+
+
+

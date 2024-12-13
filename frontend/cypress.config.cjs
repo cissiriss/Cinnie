@@ -9,6 +9,7 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
+    baseUrl: "http://localhost:3000",
     async setupNodeEvents(on, config) {
       const bundler = createBundler({
         plugins: [createEsbuildPlugin(config)],
@@ -20,9 +21,7 @@ module.exports = defineConfig({
       return config;
     },
     specPattern: [
-      // E2E-filer Cypress letar efter som standard
       "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
-      // Tillägg för Cucumber
       "cypress/e2e/**/*.feature",
     ],
   },

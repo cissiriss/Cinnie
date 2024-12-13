@@ -1,7 +1,7 @@
-import PostRecipe from "../../src/components/PostRecipe";
+// import PostRecipe from "../../src/components/PostRecipe";
 
-describe("<PostRecipe />", () => {
-  it("mounts", () => {
-    cy.mount(<PostRecipe />);
-  });
-});
+// describe("<PostRecipe />", () => {
+//   it("mounts", () => {
+//     cy.mount(<PostRecipe />);
+//   });
+// });

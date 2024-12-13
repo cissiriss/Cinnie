@@ -7,12 +7,7 @@ import SelectUnit from "./SelectUnit";
 import Quantity from "./Quantity";
 
 export default function RecepieForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useFormContext<RecipeType>();
-  console.log(errors);
+  const { register, handleSubmit } = useFormContext<RecipeType>();
 
   const { fields, append } = useFieldArray({ name: "ingredients" });
 
@@ -24,18 +19,36 @@ export default function RecepieForm() {
     });
   };
 
-  const onSubmit: SubmitHandler<RecipeType> = async (data) => {
-    console.log("submit", data);
-    console.log("Json", JSON.stringify(data));
+  const formData = {
+    recipe: {
+      name: "Test Menu",
+      description: "This is a test menu",
+      instructions: "Cook the food",
+      prep_time: 30,
+      cook_time: 45,
+      servings: 4,
+    },
+    ingredients: [
+      {
+        name: "Tomato",
+        unit: "kg",
+        quantity: 1,
+      },
+      {
+        name: "Potato",
+        unit: "kg",
+        quantity: 2,
+      },
+    ],
+  };
 
-    await fetch("http://localhost:3000/api/recipe/new/", {
+  const onSubmit: SubmitHandler<RecipeType> = async () => {
+    await fetch("http://localhost:3000/api/recipe/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        data,
-      }),
+      body: JSON.stringify(formData),
     });
   };
 

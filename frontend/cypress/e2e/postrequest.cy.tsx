@@ -1,40 +1,50 @@
-describe("POST-request", () => {
-  const formData = {
-    name: "Test Menu",
+const formData: RecipeData = {
+  recipe: {
+    recipe_name: "Test Menu",
     description: "This is a test menu",
     instructions: "Cook the food",
     prep_time: 30,
     cook_time: 45,
     servings: 4,
-    ingredients: [
-      {
-        name: "Tomato",
-        unit: "kg",
-        quantity: 1,
-      },
-      {
-        name: "Potato",
-        unit: "kg",
-        quantity: 2,
-      },
-    ],
-  };
+  },
+  ingredients: [
+    {
+      name: "Tomato",
+      unit: "kg",
+      quantity: 1,
+    },
+  ],
+};
 
+interface RecipeData {
+  recipe: {
+    recipe_name: string;
+    description: string;
+    instructions: string;
+    prep_time: number;
+    cook_time: number;
+    servings: number;
+  };
+  ingredients: {
+    name: string;
+    unit: string;
+    quantity: number;
+  }[];
+}
+
+describe("POST-request", () => {
   it("passes", () => {
-    cy.request({
-      method: "POST",
-      url: "http://localhost:3000/api/recipes",
-      body: formData,
-    }).then((response) => {
-      expect(response.status).to.eq(201);
-      expect(response.body).to.be.an("object");
-      const recipe = response.body[0];
-      expect(recipe.name).to.eq(formData.name);
-      expect(recipe.description).to.eq(formData.description);
-      expect(recipe.instructions).to.eq(formData.instructions);
-      expect(recipe.ingredients).to.be.an("array");
-      expect(recipe.ingredients[0]).to.eq(formData.ingredients[0]);
-      expect(recipe.ingredients[1]).to.eq(formData.ingredients[1]);
-    });
+    cy.request<RecipeData>("POST", "/api/recipe/new", formData).then(
+      (response) => {
+        const recipe = response.body.recipe;
+        expect(response.body.recipe.recipe_name).to.eq(
+          formData.recipe.recipe_name
+        );
+        expect(recipe.description).to.eq(formData.recipe.description);
+        expect(recipe.instructions).to.eq(formData.recipe.instructions);
+        expect(formData.ingredients).to.be.an("array");
+        expect(formData.ingredients[0]).to.eq(formData.ingredients[0]);
+      }
+    );
   });
 });

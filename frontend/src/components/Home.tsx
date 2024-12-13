@@ -1,3 +1,5 @@
+import GetRecipes from "./GetRecipes";
+
 export default function Home() {
   return (
     <>
@@ -11,6 +13,7 @@ export default function Home() {
             <li>Create a grocery shopping list based on your menu</li>
           </ol>
         </div>
+        <GetRecipes />
       </div>
     </>
   );
