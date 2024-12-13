@@ -42,9 +42,36 @@ app.get("/api/shoppinglist/:menuId", async (request, response) => {
   }
 });
 
-app.get("/api/recipes", async (req, res) => {
+app.get("/api/recipes", async (req: express.Request<Recipe>, res) => {
   try {
-    const { rows } = await client.query("SELECT * FROM recipe");
+    const { rows } = await client.query(`
+SELECT 
+    r.recipe_name,
+    r.instructions,
+    r.cook_time,
+    r.servings,
+    ARRAY_AGG(
+        JSONB_BUILD_OBJECT(
+            'ingredient_name', i.ingredient_name,
+            'unit_name', u.unit_name,
+            'quantity_value', q.quantity_value
+        )
+    ) AS ingredients
+FROM 
+    recipe r
+LEFT JOIN 
+    recipe_ingredient ri ON r.id = ri.recipe_id
+LEFT JOIN 
+    ingredient i ON ri.ingredient_id = i.id
+LEFT JOIN 
+    quantity q ON ri.quantity_id = q.id
+LEFT JOIN 
+    unit u ON ri.unit_id = u.id
+GROUP BY 
+    r.id;
+
+
+`);
     res.json(rows);
   } catch (error) {
     console.error("Error fetching recipes:", error);
@@ -97,7 +124,7 @@ app.post(
       const recipeResult = await client.query(recipeInsertQuery, recipeValues);
       const recipeId = recipeResult.rows[0].id;
 
-      const ingredientsResult = [];
+      const ingredientsResult: Ingredient[] = [];
 
       for (const ingredient of ingredients) {
         const ingredientInsertQuery = `
@@ -127,9 +154,9 @@ app.post(
         ]);
 
         ingredientsResult.push({
-          ingredient: ingredientResult.rows[0],
-          unit: unitResult.rows[0],
-          quantity: quantityResult.rows[0],
+          ingredient_name: ingredientResult.rows[0],
+          unit_name: unitResult.rows[0],
+          quantity_name: quantityResult.rows[0],
         });
       }
 
@@ -144,8 +171,8 @@ app.post(
 
       res.send(result);
     } catch (error) {
+      console.log(error);
       res
-
         .status(500)
         .json({ error: "An error occurred while saving the recipe" });
     }

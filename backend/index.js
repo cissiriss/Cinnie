@@ -80,7 +80,34 @@ app.get("/api/shoppinglist/:menuId", (request, response) => __awaiter(void 0, vo
 }));
 app.get("/api/recipes", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { rows } = yield client.query("SELECT * FROM recipe");
+        const { rows } = yield client.query(`
+SELECT 
+    r.recipe_name,
+    r.instructions,
+    r.cook_time,
+    r.servings,
+    ARRAY_AGG(
+        JSONB_BUILD_OBJECT(
+            'ingredient_name', i.ingredient_name,
+            'unit_name', u.unit_name,
+            'quantity_value', q.quantity_value
+        )
+    ) AS ingredients
+FROM 
+    recipe r
+LEFT JOIN 
+    recipe_ingredient ri ON r.id = ri.recipe_id
+LEFT JOIN 
+    ingredient i ON ri.ingredient_id = i.id
+LEFT JOIN 
+    quantity q ON ri.quantity_id = q.id
+LEFT JOIN 
+    unit u ON ri.unit_id = u.id
+GROUP BY 
+    r.id;
+
+
+`);
         res.json(rows);
     }
     catch (error) {
@@ -131,9 +158,9 @@ app.post("/api/recipe/new/", (req, res) => __awaiter(void 0, void 0, void 0, fun
                 ingredient.quantity_name,
             ]);
             ingredientsResult.push({
-                ingredient: ingredientResult.rows[0],
-                unit: unitResult.rows[0],
-                quantity: quantityResult.rows[0],
+                ingredient_name: ingredientResult.rows[0],
+                unit_name: unitResult.rows[0],
+                quantity_name: quantityResult.rows[0],
             });
         }
         const result = {
@@ -145,6 +172,7 @@ app.post("/api/recipe/new/", (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.send(result);
     }
     catch (error) {
+        console.log(error);
         res
             .status(500)
             .json({ error: "An error occurred while saving the recipe" });

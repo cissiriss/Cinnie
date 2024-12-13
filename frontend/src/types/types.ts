@@ -5,6 +5,7 @@ export type RecipeType = z.infer<typeof formSchema>;
 
 export interface RecipeData {
   recipe: {
+    id: number;
     recipe_name: string;
     description: string;
     instructions: string;
