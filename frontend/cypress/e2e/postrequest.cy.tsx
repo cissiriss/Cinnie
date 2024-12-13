@@ -1,7 +1,7 @@
 const formData: RecipeData = {
   recipe: {
     recipe_name: "Test Menu",
-    description: "This is a test menu",
+    description: "This is a test menu published via a test",
     instructions: "Cook the food",
     prep_time: 30,
     cook_time: 45,
