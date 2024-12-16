@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import AllRecipes from "./AllRecipes";
 
+interface Ingredient {
+  ingredient_name: string;
+  unit_name: string;
+  quantity_value: number;
+}
+
 export interface Recipe {
   id: number;
   recipe_name: string;
@@ -9,12 +15,7 @@ export interface Recipe {
   prep_time: number;
   cook_time: number;
   servings: number;
-
-  ingredients: {
-    name: string;
-    unit: string;
-    quantity: number;
-  }[];
+  ingredients: Ingredient[];
 }
 
 export default function GetRecipes() {
@@ -33,10 +34,5 @@ export default function GetRecipes() {
     fetchRecipes();
   }, []);
 
-  return (
-    <>
-      <h3>Recipes</h3>
-      {recipeData && <AllRecipes recipes={recipeData} />}
-    </>
-  );
+  return <>{recipeData && <AllRecipes recipes={recipeData} />}</>;
 }
