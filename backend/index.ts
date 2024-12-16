@@ -124,7 +124,7 @@ interface FormInputData {
   ingredients: Ingredient[];
 }
 
-// POST endpoint to add a recipe
+// TODO: endpoint to add a menu
 
 app.post(
   "/api/recipe/new/",

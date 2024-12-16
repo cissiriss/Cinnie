@@ -1,16 +1,26 @@
+import { useEffect, useState } from "react";
+import { Recipe } from "./GetRecipes";
+
 export default function SelectRecipe() {
+  const [recipes, setRecipes] = useState<Recipe[]>();
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/recipes/")
+      .then((response) => response.json())
+      .then((data) => {
+        setRecipes(data);
+      });
+  }, []);
+
   return (
     <>
-      <h3>Recipes</h3>
-
       <select className="select select-success w-full max-w-md m-4">
         <option disabled selected>
-          Recipe
+          Recipes
         </option>
-        <option>Chicken</option>
-        <option>Tacos</option>
-        <option>Pudding</option>
-        <option>Pancakes</option>
+        {recipes?.map((recipe) => (
+          <option key={recipe.id}>{recipe.recipe_name}</option>
+        ))}
       </select>
     </>
   );

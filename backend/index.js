@@ -139,7 +139,7 @@ GROUP BY
         res.status(500).send("Server error");
     }
 }));
-// POST endpoint to add a recipe
+// TODO: endpoint to add a menu
 app.post("/api/recipe/new/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { recipe, ingredients } = req.body;
     try {
