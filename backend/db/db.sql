@@ -2,6 +2,7 @@
 CREATE TABLE recipe (
     id SERIAL UNIQUE PRIMARY KEY,
     recipe_name VARCHAR(255) NOT NULL,
+    description TEXT,
     instructions TEXT,
     cook_time INTEGER,
     servings INTEGER,
