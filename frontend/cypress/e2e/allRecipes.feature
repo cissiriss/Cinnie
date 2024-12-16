@@ -1,22 +1,9 @@
-Feature: Recipe Collection Display
+Feature: Se alla recept
 
-  As a user
-  I want to see a collection of recipes displayed on the page
-  So that I can browse and select a recipe to view or prepare
+Jag vill kunna se en lista med alla recept på webbsidan
 
-  Background:
-    Given the database contains the following recipes:
-      | id | name           | description          |
-      | 1  | Spaghetti      | A classic Italian dish |
-      | 2  | Pancakes       | Fluffy breakfast pancakes |
-      | 3  | Caesar Salad   | Fresh salad with Caesar dressing |
+Scenario: Besök hemsidan och kunna få en lista med alla recept
 
-  Scenario: Display a list of recipes
-    When I navigate to the recipe collection page
-    Then I should see a list of recipes displayed
-    And each recipe should show its name and description
-
-  Scenario: No recipes available
-    Given the database contains no recipes
-    When I navigate to the recipe collection page
-    Then I should see a message saying "No recipes available"
+Given Att jag är på hemsidan
+When När jag går till recipes
+Then Vill jag se en samling av alla recept

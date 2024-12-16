@@ -9,9 +9,9 @@ const formData: RecipeData = {
   },
   ingredients: [
     {
-      name: "Tomato",
-      unit: "kg",
-      quantity: 1,
+      ingredient_name: "Tomato",
+      unit_name: "kg",
+      quantity_value: 1,
     },
   ],
 };
@@ -26,9 +26,9 @@ interface RecipeData {
     servings: number;
   };
   ingredients: {
-    name: string;
-    unit: string;
-    quantity: number;
+    ingredient_name: string;
+    unit_name: string;
+    quantity_value: number;
   }[];
 }
 

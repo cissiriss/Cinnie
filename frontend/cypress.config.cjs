@@ -23,6 +23,7 @@ module.exports = defineConfig({
     specPattern: [
       "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
       "cypress/e2e/**/*.feature",
+      "cypress/e2e/**/*.{ts,tsx}",
     ],
   },
 
