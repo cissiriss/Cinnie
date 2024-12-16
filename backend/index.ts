@@ -20,7 +20,30 @@ app.use(cors());
 app.get("/api/menus", async (request, response) => {
   try {
     const { rows } = await client.query(
-      "SELECT m.menu_name AS Menu_Name, r.recipe_name AS Recipe FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id WHERE mr.menu_id = 1"
+      `SELECT
+    m.id AS menu_id,
+    m.menu_name,
+    m.start_date,
+    m.end_date,
+    COALESCE(
+        json_agg(
+            json_build_object(
+                'recipe_id', r.id,
+                'recipe_name', r.recipe_name
+            )
+        ) FILTER (WHERE r.id IS NOT NULL),
+        '[]'
+    ) AS recipes
+FROM
+    menu m
+LEFT JOIN
+    menu_recipe mr ON m.id = mr.menu_id
+LEFT JOIN
+    recipe r ON mr.recipe_id = r.id
+GROUP BY
+    m.id
+ORDER BY
+    m.id;`
     );
     response.status(200).json(rows);
   } catch (error) {
@@ -30,10 +53,12 @@ app.get("/api/menus", async (request, response) => {
 });
 
 app.get("/api/shoppinglist/:menuId", async (request, response) => {
-  const menuId = request.params;
+  const { menuId } = request.params;
+  console.log(menuId);
   try {
     const { rows } = await client.query(
-      "SELECT i.ingredient AS ingredient, q.quantity_value AS quantity, u.unit_name AS unit FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id JOIN recipe_ingredient ri ON r.id = ri.recipe_id JOIN ingredient i ON ri.ingredient_id = i.id JOIN quantity q ON ri.quantity_id = q.id JOIN unit u ON ri.unit_id = u.id WHERE mr.id = 1 ORDER BY i.ingredient"
+      "SELECT i.ingredient AS ingredient, q.quantity_value AS quantity, u.unit_name AS unit FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id JOIN recipe_ingredient ri ON r.id = ri.recipe_id JOIN ingredient i ON ri.ingredient_id = i.id JOIN quantity q ON ri.quantity_id = q.id JOIN unit u ON ri.unit_id = u.id WHERE mr.id = $1 ORDER BY i.ingredient",
+      [menuId]
     );
     response.status(200).json(rows);
   } catch (error) {
@@ -45,7 +70,7 @@ app.get("/api/shoppinglist/:menuId", async (request, response) => {
 app.get("/api/recipes", async (req: express.Request<Recipe>, res) => {
   try {
     const { rows } = await client.query(`
-SELECT 
+SELECT
     r.recipe_name,
     r.instructions,
     r.cook_time,
@@ -57,17 +82,17 @@ SELECT
             'quantity_value', q.quantity_value
         )
     ) AS ingredients
-FROM 
+FROM
     recipe r
-LEFT JOIN 
+LEFT JOIN
     recipe_ingredient ri ON r.id = ri.recipe_id
-LEFT JOIN 
+LEFT JOIN
     ingredient i ON ri.ingredient_id = i.id
-LEFT JOIN 
+LEFT JOIN
     quantity q ON ri.quantity_id = q.id
-LEFT JOIN 
+LEFT JOIN
     unit u ON ri.unit_id = u.id
-GROUP BY 
+GROUP BY
     r.id;
 
 

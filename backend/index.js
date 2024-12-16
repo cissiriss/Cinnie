@@ -59,7 +59,30 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.get("/api/menus", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { rows } = yield client.query("SELECT m.menu_name AS Menu_Name, r.recipe_name AS Recipe FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id WHERE mr.menu_id = 1");
+        const { rows } = yield client.query(`SELECT
+    m.id AS menu_id,
+    m.menu_name,
+    m.start_date,
+    m.end_date,
+    COALESCE(
+        json_agg(
+            json_build_object(
+                'recipe_id', r.id,
+                'recipe_name', r.recipe_name
+            )
+        ) FILTER (WHERE r.id IS NOT NULL),
+        '[]'
+    ) AS recipes
+FROM
+    menu m
+LEFT JOIN
+    menu_recipe mr ON m.id = mr.menu_id
+LEFT JOIN
+    recipe r ON mr.recipe_id = r.id
+GROUP BY
+    m.id
+ORDER BY
+    m.id;`);
         response.status(200).json(rows);
     }
     catch (error) {
@@ -68,9 +91,10 @@ app.get("/api/menus", (request, response) => __awaiter(void 0, void 0, void 0, f
     }
 }));
 app.get("/api/shoppinglist/:menuId", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const menuId = request.params;
+    const { menuId } = request.params;
+    console.log(menuId);
     try {
-        const { rows } = yield client.query("SELECT i.ingredient AS ingredient, q.quantity_value AS quantity, u.unit_name AS unit FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id JOIN recipe_ingredient ri ON r.id = ri.recipe_id JOIN ingredient i ON ri.ingredient_id = i.id JOIN quantity q ON ri.quantity_id = q.id JOIN unit u ON ri.unit_id = u.id WHERE mr.id = 1 ORDER BY i.ingredient");
+        const { rows } = yield client.query("SELECT i.ingredient AS ingredient, q.quantity_value AS quantity, u.unit_name AS unit FROM menu m JOIN menu_recipe mr ON m.id = mr.menu_id JOIN recipe r ON mr.recipe_id = r.id JOIN recipe_ingredient ri ON r.id = ri.recipe_id JOIN ingredient i ON ri.ingredient_id = i.id JOIN quantity q ON ri.quantity_id = q.id JOIN unit u ON ri.unit_id = u.id WHERE mr.id = $1 ORDER BY i.ingredient", [menuId]);
         response.status(200).json(rows);
     }
     catch (error) {
@@ -81,7 +105,7 @@ app.get("/api/shoppinglist/:menuId", (request, response) => __awaiter(void 0, vo
 app.get("/api/recipes", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { rows } = yield client.query(`
-SELECT 
+SELECT
     r.recipe_name,
     r.instructions,
     r.cook_time,
@@ -93,17 +117,17 @@ SELECT
             'quantity_value', q.quantity_value
         )
     ) AS ingredients
-FROM 
+FROM
     recipe r
-LEFT JOIN 
+LEFT JOIN
     recipe_ingredient ri ON r.id = ri.recipe_id
-LEFT JOIN 
+LEFT JOIN
     ingredient i ON ri.ingredient_id = i.id
-LEFT JOIN 
+LEFT JOIN
     quantity q ON ri.quantity_id = q.id
-LEFT JOIN 
+LEFT JOIN
     unit u ON ri.unit_id = u.id
-GROUP BY 
+GROUP BY
     r.id;
 
 

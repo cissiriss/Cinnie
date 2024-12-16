@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import ShoppingList from "./ShoppingList";
+import { Recipe } from "./GetRecipes";
 
 interface Menu {
-  id: number;
+  menu_id: number;
   menu_name: string;
-  recipe: string;
+  recipes: Recipe[];
 }
 
 const AllMenus = () => {
@@ -21,6 +22,7 @@ const AllMenus = () => {
         }
         const data = await response.json();
         setMenus(data);
+        console.log("data", data);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -41,6 +43,7 @@ const AllMenus = () => {
   }
 
   const viewShoppingList = async (menuId: number) => {
+    console.log("menuId", menuId);
     setSelectedMenuId(menuId);
   };
 
@@ -49,13 +52,15 @@ const AllMenus = () => {
       <div className="prose">
         <h1>Menus</h1>
         {menus.map((menu) => (
-          <div key={menu.id} className="menu-item">
+          <div key={menu.menu_id} className="menu-item">
             <h2>{menu.menu_name}</h2>
             <ul>
-              <li>{menu.recipe}</li>
+              {menu.recipes.map((recipe, index) => (
+                <li key={index}>{recipe.recipe_name}</li>
+              ))}
             </ul>
             <button
-              onClick={() => viewShoppingList(menu.id)}
+              onClick={() => viewShoppingList(menu.menu_id)}
               className="btn btn-neutral m-4 w-full max-w-xs">
               Create shopping list
             </button>
