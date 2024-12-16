@@ -38,7 +38,7 @@ const ShoppingList: React.FC<{ menuId: number }> = ({ menuId }) => {
 
   return (
     <div>
-      <h2>Inköpslista</h2>
+      <h2>Shopping List</h2>
       <ul>
         {shoppingList.map((item, index) => (
           <li key={index}>
