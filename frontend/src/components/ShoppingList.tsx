@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 interface Ingredient {
-  ingredient: string;
+  ingredient_name: string;
   quantity: number;
   unit: string;
 }
@@ -34,6 +34,8 @@ const ShoppingList: React.FC<{ menuId: number }> = ({ menuId }) => {
     fetchList();
   }, [menuId]);
 
+  console.log("shoppingList", shoppingList);
+
   if (error) return <div>{error}</div>;
 
   return (
@@ -42,7 +44,7 @@ const ShoppingList: React.FC<{ menuId: number }> = ({ menuId }) => {
       <ul>
         {shoppingList.map((item, index) => (
           <li key={index}>
-            {item.ingredient}: {item.quantity} {item.unit}
+            {item.ingredient_name}: {item.quantity} {item.unit}
           </li>
         ))}
       </ul>
