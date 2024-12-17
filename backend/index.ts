@@ -17,6 +17,31 @@ app.use(express.json());
 
 app.use(cors());
 
+interface Recipe {
+  recipe_name: string;
+  description: string;
+  instructions: string;
+  prep_time: string;
+  cook_time: string;
+  servings: string;
+}
+
+interface Ingredient {
+  ingredient_name: string;
+  unit_name: string;
+  quantity_name: string;
+}
+
+interface RecipeInputData {
+  recipe: Recipe;
+  ingredients: Ingredient[];
+}
+
+interface MenuInputData {
+  menu_name: string;
+  recipes: string[];
+}
+
 app.get("/api/menus", async (request, response) => {
   try {
     const { rows } = await client.query(
@@ -94,8 +119,6 @@ LEFT JOIN
     unit u ON ri.unit_id = u.id
 GROUP BY
     r.id;
-
-
 `);
     res.json(rows);
   } catch (error) {
@@ -104,31 +127,54 @@ GROUP BY
   }
 });
 
-interface Recipe {
-  recipe_name: string;
-  description: string;
-  instructions: string;
-  prep_time: string;
-  cook_time: string;
-  servings: string;
-}
+app.post("/api/menu/new", async (req: express.Request<MenuInputData>, res) => {
+  const { menu_name, recipes, start_date, end_date } = req.body;
 
-interface Ingredient {
-  ingredient_name: string;
-  unit_name: string;
-  quantity_name: string;
-}
+  try {
+    await client.query("BEGIN");
 
-interface FormInputData {
-  recipe: Recipe;
-  ingredients: Ingredient[];
-}
+    const menuInsertQuery = `
+      INSERT INTO menu (menu_name, start_date, end_date)
+      VALUES ($1, $2, $3) RETURNING *
+    `;
+    const menuResult = await client.query(menuInsertQuery, [
+      menu_name,
+      start_date,
+      end_date,
+    ]);
 
-// TODO: endpoint to add a menu
+    const menuId = menuResult.rows[0].id;
+
+    const menuRecipeInsertQuery = `
+      INSERT INTO menu_recipe (menu_id, recipe_id, date)
+      VALUES ($1, $2, now())
+      RETURNING *
+    `;
+
+    // Loop through the `recipes` array and insert each recipe_id
+    for (const recipeId of recipes) {
+      await client.query(menuRecipeInsertQuery, [menuId, recipeId]);
+    }
+
+    await client.query("COMMIT");
+
+    const result = {
+      menu: menuResult.rows[0],
+      recipes,
+    };
+
+    console.log(result);
+    res.status(201).json(result);
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while saving the menu" });
+  }
+});
 
 app.post(
   "/api/recipe/new/",
-  async (req: express.Request<FormInputData>, res) => {
+  async (req: express.Request<RecipeInputData>, res) => {
     const { recipe, ingredients } = req.body;
     try {
       await client.query("BEGIN");

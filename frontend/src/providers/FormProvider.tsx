@@ -24,8 +24,13 @@ export default function RecipeFormProvider({ children }: OSAFormProps) {
           quantity: "",
         },
       ],
+      menu: {
+        menu_name: "",
+        recipes: [],
+      },
     },
     resolver: zodResolver(formSchema),
   });
+
   return <FormProvider {...methods}>{children}</FormProvider>;
 }

@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { Recipe } from "./GetRecipes";
+import { useFormContext } from "react-hook-form";
+import { MenuType } from "../types/types";
 
 export default function SelectRecipe() {
   const [recipes, setRecipes] = useState<Recipe[]>();
+  const [chosenRecipes, setChosenRecipes] = useState<string[]>([]);
+
+  const { register, getValues } = useFormContext<MenuType>();
 
   useEffect(() => {
     fetch("http://localhost:3000/api/recipes/")
@@ -12,16 +17,27 @@ export default function SelectRecipe() {
       });
   }, []);
 
+  console.log(chosenRecipes);
+  console.log(getValues("recipes"));
+
   return (
-    <>
-      <select className="select select-success w-full max-w-md m-4">
-        <option disabled selected>
-          Recipes
-        </option>
-        {recipes?.map((recipe) => (
-          <option key={recipe.id}>{recipe.recipe_name}</option>
-        ))}
-      </select>
-    </>
+    <div className="flex flex-col overflow-y-scroll h-96">
+      {recipes?.map((recipe) => (
+        <>
+          <p key={recipe.id}>{recipe.recipe_name}</p>
+
+          <input
+            {...register("recipes")}
+            onChange={(value) =>
+              setChosenRecipes([...chosenRecipes, value.target.value])
+            }
+            key={recipe.id}
+            type="checkbox"
+            className="checkbox"
+            value={recipe.recipe_name}
+          />
+        </>
+      ))}
+    </div>
   );
 }

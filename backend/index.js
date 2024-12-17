@@ -129,8 +129,6 @@ LEFT JOIN
     unit u ON ri.unit_id = u.id
 GROUP BY
     r.id;
-
-
 `);
         res.json(rows);
     }
@@ -139,7 +137,43 @@ GROUP BY
         res.status(500).send("Server error");
     }
 }));
-// TODO: endpoint to add a menu
+app.post("/api/menu/new", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { menu_name, recipes, start_date, end_date } = req.body;
+    try {
+        yield client.query("BEGIN");
+        const menuInsertQuery = `
+      INSERT INTO menu (menu_name, start_date, end_date)
+      VALUES ($1, $2, $3) RETURNING *
+    `;
+        const menuResult = yield client.query(menuInsertQuery, [
+            menu_name,
+            start_date,
+            end_date,
+        ]);
+        const menuId = menuResult.rows[0].id;
+        const menuRecipeInsertQuery = `
+      INSERT INTO menu_recipe (menu_id, recipe_id, date)
+      VALUES ($1, $2, now())
+      RETURNING *
+    `;
+        // Loop through the `recipes` array and insert each recipe_id
+        for (const recipeId of recipes) {
+            yield client.query(menuRecipeInsertQuery, [menuId, recipeId]);
+        }
+        yield client.query("COMMIT");
+        const result = {
+            menu: menuResult.rows[0],
+            recipes,
+        };
+        console.log(result);
+        res.status(201).json(result);
+    }
+    catch (error) {
+        yield client.query("ROLLBACK");
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while saving the menu" });
+    }
+}));
 app.post("/api/recipe/new/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { recipe, ingredients } = req.body;
     try {
