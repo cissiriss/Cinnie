@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es5", "dom"],
-    "jsx": "preserve",
-    "types": ["cypress", "node"]
+    "jsx": "preserve"
   },
   "include": ["**/*.ts", "**/*.tsx", "support/e2e.ts"]
 }

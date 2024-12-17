@@ -11,38 +11,46 @@ export default function AllRecipes(recipes: RecipeProps) {
 
   return (
     <div>
-      <h1>All recipes</h1>
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          <ul>
-            {recipes.recipes.map((recipe) => (
-              <>
+      <h1 className="text-4xl m-4 flex justify-center">All recipes</h1>
+      <div className="flex items-center w-1/2 m-4 bg-base-300 ">
+        <table className="table w-full justify-center">
+          {recipes.recipes.map((recipe) => (
+            <div className="flex flex-col justify-center m-6">
+              <h3 className="text-2xl m-4">{recipe.recipe_name}</h3>
+              <ul>
                 <li key={recipe.id}>
-                  <h2>{recipe.recipe_name}</h2>
                   {recipe.description && (
-                    <p>Description: {recipe.description}</p>
+                    <p className="text-lg">Description: {recipe.description}</p>
                   )}
                   {recipe.instructions && (
-                    <p>Instructions: {recipe.instructions}</p>
+                    <p className="text-lg">
+                      How to make: {recipe.instructions}
+                    </p>
                   )}
-                  {recipe.prep_time && <p>Prep time: {recipe.prep_time}</p>}
-                  {recipe.cook_time && <p>Cook time: {recipe.cook_time}</p>}
+                  {recipe.prep_time && (
+                    <p className="text-lg">Prep time: {recipe.prep_time}</p>
+                  )}
+                  {recipe.cook_time && (
+                    <p className="text-lg">Cook time: {recipe.cook_time}</p>
+                  )}
 
-                  <p>Servings: {recipe.servings}</p>
+                  <p className="text-lg">Servings: {recipe.servings}</p>
                 </li>
+              </ul>
 
-                <tbody key={recipe.id}>
-                  {recipe.ingredients.map((ingredient) => (
-                    <tr key={ingredient.ingredient_name}>
-                      <td className="m-4 ">{ingredient.ingredient_name}</td>
-                      <td className="m-2">{ingredient.quantity_value}</td>
-                      <td>{ingredient.unit_name}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </>
-            ))}
-          </ul>
+              <tbody className="flex flex-col w-full items-center">
+                {recipe.ingredients.map((ingredient) => (
+                  <tr key={ingredient.ingredient_name}>
+                    <td className="m-4 text-lg">
+                      {ingredient.ingredient_name}
+                    </td>
+                    <td className="m-2 text-lg">{ingredient.quantity_value}</td>
+                    <td className="text-lg">{ingredient.unit_name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </div>
+          ))}
         </table>
       </div>
     </div>
