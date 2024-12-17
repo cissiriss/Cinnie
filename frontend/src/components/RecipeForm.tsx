@@ -1,5 +1,3 @@
-// import { useState } from "react";
-// import Ingredients from "./Ingredients";
 import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
 
 import { RecipeType } from "../types/types";

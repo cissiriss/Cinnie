@@ -1,3 +1,19 @@
+interface RecipeData {
+  recipe: {
+    recipe_name: string;
+    description: string;
+    instructions: string;
+    prep_time: number;
+    cook_time: number;
+    servings: number;
+  };
+  ingredients: {
+    ingredient_name: string;
+    unit_name: string;
+    quantity_value: number;
+  }[];
+}
+
 const formData: RecipeData = {
   recipe: {
     recipe_name: "Test Menu",
@@ -15,22 +31,6 @@ const formData: RecipeData = {
     },
   ],
 };
-
-interface RecipeData {
-  recipe: {
-    recipe_name: string;
-    description: string;
-    instructions: string;
-    prep_time: number;
-    cook_time: number;
-    servings: number;
-  };
-  ingredients: {
-    ingredient_name: string;
-    unit_name: string;
-    quantity_value: number;
-  }[];
-}
 
 describe("POST-request", () => {
   it("passes", () => {

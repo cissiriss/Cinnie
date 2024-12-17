@@ -1,40 +1,45 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/Header.png";
 
+interface Link {
+  link: string;
+  name: string;
+}
+
 export default function Navbar() {
+  const Links: Link[] = [
+    {
+      link: "/",
+      name: "Home",
+    },
+    {
+      link: "/addRecipe",
+      name: "Add recipe",
+    },
+    {
+      link: "/recipes",
+      name: "All recipes",
+    },
+  ];
+
   return (
     <div>
       <nav className="container flex flex-col items-center w-full">
         <img src={logo} alt="Header" sizes="80" className="rounded-3xl m-4" />
         <div className="flex justify-center">
           <ul className=" flex flex-row m-4">
-            <li className="m-4">
-              <Link
-                role="button"
-                className="btn m-1 text-dark-green text-xl"
-                to="/"
-              >
-                Hem
-              </Link>
-            </li>
-            <li className="m-4">
-              <Link
-                role="button"
-                className="btn m-1 text-dark-green text-xl"
-                to="/addRecipe"
-              >
-                Add recipe
-              </Link>
-            </li>
-            <li className="m-4">
-              <Link
-                role="button"
-                className="btn m-1 text-dark-green text-xl"
-                to="/recipes"
-              >
-                All Recipes
-              </Link>
-            </li>
+            {Links.map((link) => (
+              <li className="m-4">
+                <Link
+                  role="button"
+                  className="btn m-1 text-dark-green text-xl"
+                  to={link.link}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+
             <div className="dropdown m-4">
               <div
                 tabIndex={0}
