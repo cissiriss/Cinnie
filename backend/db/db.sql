@@ -27,7 +27,7 @@ CREATE TABLE ingredient (
 CREATE TABLE menu (
     id SERIAL PRIMARY KEY,
     menu_name VARCHAR(255) NOT NULL,
-    start_date DATE NOT NULL,
+    start_date DATE NOT NULL,   
     end_date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );

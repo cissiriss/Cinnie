@@ -25,7 +25,15 @@ export const ingredientSchema = z.array(
   })
 );
 
+export const menuSchema = z.object({
+  menu_name: z
+    .string()
+    .min(1, { message: "Du behöver fylla i ett namn på Menyn" }),
+  recipes: z.array(z.string()),
+});
+
 export const formSchema = z.object({
   recipe: recipeSchema,
   ingredients: ingredientSchema,
+  menu: menuSchema,
 });

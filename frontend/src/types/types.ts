@@ -1,4 +1,6 @@
 import { z } from "zod";
-import { formSchema } from "./recipeSchema";
+import { formSchema, menuSchema } from "./recipeSchema";
 
 export type RecipeType = z.infer<typeof formSchema>;
+
+export type MenuType = z.infer<typeof menuSchema>;
