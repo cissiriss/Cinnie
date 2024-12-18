@@ -26,8 +26,6 @@ const MenuForm = () => {
           Add Menu
         </button>
       </div>
-
-      <h2>Selected recipes for .. </h2>
     </div>
   );
 };
