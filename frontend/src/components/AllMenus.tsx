@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ShoppingList from "./ShoppingList";
-import { Recipe } from "./GetRecipes";
+import { Recipe } from "../types/types";
 
 interface Menu {
   menu_id: number;
@@ -43,7 +43,6 @@ const AllMenus = () => {
   }
 
   const viewShoppingList = async (menuId: number) => {
-    console.log("menuId", menuId);
     setSelectedMenuId(menuId);
   };
 
@@ -61,7 +60,8 @@ const AllMenus = () => {
             </ul>
             <button
               onClick={() => viewShoppingList(menu.menu_id)}
-              className="btn btn-neutral m-4 w-full max-w-xs">
+              className="btn btn-neutral m-4 w-full max-w-xs"
+            >
               Create shopping list
             </button>
           </div>
