@@ -96,9 +96,10 @@ app.get("/api/shoppinglist/:menuId", async (request, response) => {
       JOIN ingredient i ON ri.ingredient_id = i.id
       JOIN quantity q ON ri.quantity_id = q.id
       JOIN unit u ON ri.unit_id = u.id
-      WHERE m.id = 1
+      WHERE m.id = $1
       GROUP BY r.id, r.recipe_name
-      ORDER BY r.recipe_name`
+      ORDER BY r.recipe_name`,
+      [menuId]
     );
     response.status(200).json(rows);
   } catch (error) {

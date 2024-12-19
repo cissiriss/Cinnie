@@ -27,7 +27,8 @@ export default function Navbar() {
             <div
               tabIndex={0}
               role="button"
-              className="btn m-1 text-dark-green text-xl m-4">
+              className="btn m-1 text-dark-green text-xl m-4"
+            >
               <li>
                 <Link className="text-dark-green" to="/">
                   Home
@@ -39,14 +40,16 @@ export default function Navbar() {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn m-1 text-dark-green text-xl ">
+                className="btn m-1 text-dark-green text-xl "
+              >
                 Recipes
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+              >
                 {Links.map((link) => (
-                  <li>
+                  <li key={link.link}>
                     <Link className="text-dark-green" to={link.link}>
                       {link.name}
                     </Link>
@@ -59,12 +62,14 @@ export default function Navbar() {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn m-1 text-dark-green text-xl ">
+                className="btn m-1 text-dark-green text-xl "
+              >
                 Menus
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+              >
                 <li>
                   <Link className="text-dark-green" to="/menus">
                     See menus
