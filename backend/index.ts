@@ -174,7 +174,6 @@ app.post("/api/menu/new", async (req: express.Request<MenuInputData>, res) => {
       recipes,
     };
 
-    console.log(result);
     res.status(201).json(result);
   } catch (error) {
     await client.query("ROLLBACK");

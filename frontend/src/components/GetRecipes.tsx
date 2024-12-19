@@ -11,7 +11,6 @@ export default function GetRecipes() {
     const data = await response.json();
 
     setRecipeData(data);
-    console.log("data", data);
   };
 
   useEffect(() => {
