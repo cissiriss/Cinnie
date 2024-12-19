@@ -5,10 +5,15 @@ export type RecipeType = z.infer<typeof formSchema>;
 
 export type MenuType = z.infer<typeof menuSchema>;
 
+export interface Menu {
+  recipe_id: number;
+  recipe_name: string;
+  ingredients: Ingredient[];
+}
 export interface Ingredient {
   ingredient_name: string;
-  unit_name: string;
-  quantity_value: number;
+  unit: string;
+  quantity: number;
 }
 
 export interface Recipe {
