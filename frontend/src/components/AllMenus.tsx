@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ShoppingList from "./ShoppingList";
-import { Recipe } from "./GetRecipes";
+import { Recipe } from "../types/types";
 
 interface Menu {
   menu_id: number;
@@ -22,7 +22,6 @@ const AllMenus = () => {
         }
         const data = await response.json();
         setMenus(data);
-        console.log("data", data);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -43,7 +42,6 @@ const AllMenus = () => {
   }
 
   const viewShoppingList = async (menuId: number) => {
-    console.log("menuId", menuId);
     setSelectedMenuId(menuId);
   };
 

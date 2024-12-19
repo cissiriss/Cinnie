@@ -17,7 +17,6 @@ const MenuForm = () => {
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data);
-        console.log(data);
       });
   }, []);
 
@@ -29,7 +28,6 @@ const MenuForm = () => {
       },
       body: JSON.stringify(data),
     });
-    console.log(data);
   };
 
   return (
