@@ -1,22 +1,6 @@
 import { useEffect, useState } from "react";
 import AllRecipes from "./AllRecipes";
-
-interface Ingredient {
-  ingredient_name: string;
-  unit_name: string;
-  quantity_value: number;
-}
-
-export interface Recipe {
-  id: number;
-  recipe_name: string;
-  description: string;
-  instructions: string;
-  prep_time: number;
-  cook_time: number;
-  servings: number;
-  ingredients: Ingredient[];
-}
+import { Recipe } from "../types/types";
 
 export default function GetRecipes() {
   const [recipeData, setRecipeData] = useState<Recipe[]>();

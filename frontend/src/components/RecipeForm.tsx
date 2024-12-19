@@ -1,11 +1,9 @@
-import { SubmitHandler, useFieldArray, useFormContext } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 import { RecipeType } from "../types/types";
-import SelectUnit from "./SelectUnit";
-import Quantity from "./Quantity";
 
 export default function RecepieForm() {
-  const { register, handleSubmit } = useFormContext<RecipeType>();
+  const { register, handleSubmit, reset } = useForm<RecipeType>();
 
   const { fields, append } = useFieldArray({ name: "ingredients" });
 
@@ -17,37 +15,19 @@ export default function RecepieForm() {
     });
   };
 
-  const formData = {
-    recipe: {
-      name: "Test Menu",
-      description: "This is a test menu",
-      instructions: "Cook the food",
-      prep_time: 30,
-      cook_time: 45,
-      servings: 4,
-    },
-    ingredients: [
-      {
-        name: "Tomato",
-        unit: "kg",
-        quantity: 1,
-      },
-      {
-        name: "Potato",
-        unit: "kg",
-        quantity: 2,
-      },
-    ],
-  };
+  const onSubmit: SubmitHandler<RecipeType> = async (data) => {
+    console.log(data);
 
-  const onSubmit: SubmitHandler<RecipeType> = async () => {
     await fetch("http://localhost:3000/api/recipe/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(data),
     });
+    if (!Error) {
+      reset();
+    }
   };
 
   return (
@@ -102,8 +82,28 @@ export default function RecepieForm() {
                 placeholder="Ingredient"
                 className="input input-bordered input-success m-4"
               />
-              <SelectUnit index={index} />
-              <Quantity index={index} />
+              <select
+                {...register(`ingredients.${index}.unit`)}
+                className="select select-success m-4"
+              >
+                <option disabled selected>
+                  Unit
+                </option>
+                <option>st</option>
+                <option>gram</option>
+                <option>ml</option>
+                <option>cl</option>
+                <option>dl</option>
+                <option>tsp</option>
+                <option>tbsp</option>
+              </select>
+
+              <input
+                {...register(`ingredients.${index}.quantity`)}
+                type="text"
+                placeholder="Quantity"
+                className="input input-bordered input-success max-w-xs"
+              />
             </div>
           ))}
 
