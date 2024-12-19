@@ -136,25 +136,20 @@ GROUP BY
     }
 }));
 app.post("/api/menu/new", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { menu_name, recipes, start_date, end_date } = req.body;
+    const { menu_name, recipes } = req.body;
     try {
         yield client.query("BEGIN");
         const menuInsertQuery = `
-      INSERT INTO menu (menu_name, start_date, end_date)
-      VALUES ($1, $2, $3) RETURNING *
+      INSERT INTO menu (menu_name)
+      VALUES ($1) RETURNING *
     `;
-        const menuResult = yield client.query(menuInsertQuery, [
-            menu_name,
-            start_date,
-            end_date,
-        ]);
+        const menuResult = yield client.query(menuInsertQuery, [menu_name]);
         const menuId = menuResult.rows[0].id;
         const menuRecipeInsertQuery = `
       INSERT INTO menu_recipe (menu_id, recipe_id, date)
       VALUES ($1, $2, now())
       RETURNING *
     `;
-        // Loop through the `recipes` array and insert each recipe_id
         for (const recipeId of recipes) {
             yield client.query(menuRecipeInsertQuery, [menuId, recipeId]);
         }

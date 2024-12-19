@@ -26,9 +26,7 @@ CREATE TABLE ingredient (
 
 CREATE TABLE menu (
     id SERIAL PRIMARY KEY,
-    menu_name VARCHAR(255) NOT NULL,
-    start_date DATE NOT NULL,   
-    end_date DATE NOT NULL,
+    menu_name VARCHAR(255) NOT NULL,  
     created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -99,40 +97,6 @@ INSERT INTO quantity (quantity_value) VALUES
 ('500');
 
 -- 4. Lägg till recept
-INSERT INTO recipe (recipe_name, instructions, cook_time, servings) VALUES 
-
--- Fyll på med dålig fejkdata
-
--- 1. Skapa ingredienser
-INSERT INTO ingredient (ingredient) VALUES
-('Flour'),
-('Sugar'),
-('Butter'),
-('Eggs'),
-('Milk'),
-('Salt'),
-('Tomatoes'),
-('Cheese'),
-('Chicken'),
-('Rice');
-
--- 2. Skapa enheter
-INSERT INTO unit (unit_name) VALUES
-('grams'),
-('cups'),
-('tablespoons'),
-('pieces'),
-('liters');
-
--- 3. Skapa kvantiteter
-INSERT INTO quantity (quantity_value) VALUES
-('100'),
-('200'),
-('1'),
-('2'),
-('500');
-
--- 4. Lägg till recept
 INSERT INTO recipe (recipe_name, instructions, cook_time, servings) VALUES
 
 ('Pancakes', 'Mix and fry on pan.', 15, 4),
@@ -145,6 +109,7 @@ INSERT INTO recipe (recipe_name, instructions, cook_time, servings) VALUES
 ('Rice Pilaf', 'Cook rice with spices.', 30, 4),
 ('Chocolate Cake', 'Bake in oven.', 45, 8),
 ('Milkshake', 'Blend milk with ingredients.', 5, 1);
+
 
 -- 5. Koppla recept till ingredienser
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, quantity_id, unit_id) VALUES
@@ -172,11 +137,11 @@ INSERT INTO recipe_ingredient (recipe_id, ingredient_id, quantity_id, unit_id) V
 (5, 8, 1, 1); -- Cheese, 100 grams
 
 -- 6. Skapa menyer
-INSERT INTO menu (menu_name, start_date, end_date) VALUES 
+INSERT INTO menu (menu_name) VALUES 
 
-('Weekly Menu 1', '2024-12-09', '2024-12-15'),
-('Weekly Menu 2', '2024-12-16', '2024-12-22'),
-('Weekly Menu 3', '2024-12-23', '2024-12-29');
+('Weekly Menu 1'),
+('Weekly Menu 2'),
+('Weekly Menu 3');
 
 -- 7. Koppla recept till menyer
 INSERT INTO menu_recipe (menu_id, recipe_id, date) VALUES
@@ -195,6 +160,7 @@ INSERT INTO menu_recipe (menu_id, recipe_id, date) VALUES
 (3, 8, '2024-12-24'),
 (3, 9, '2024-12-25'),
 (3, 10, '2024-12-26');
+
 
 
 -- Drop all tables in the public schema

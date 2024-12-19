@@ -2,11 +2,11 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema } from "../types/recipeSchema";
 import { RecipeType } from "../types/types";
-interface OSAFormProps {
+interface RecipeProps {
   children: React.ReactNode;
 }
 
-export default function RecipeFormProvider({ children }: OSAFormProps) {
+export default function RecipeFormProvider({ children }: RecipeProps) {
   const methods = useForm<RecipeType>({
     defaultValues: {
       recipe: {

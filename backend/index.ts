@@ -126,20 +126,16 @@ GROUP BY
 });
 
 app.post("/api/menu/new", async (req: express.Request<MenuInputData>, res) => {
-  const { menu_name, recipes, start_date, end_date } = req.body;
+  const { menu_name, recipes } = req.body;
 
   try {
     await client.query("BEGIN");
 
     const menuInsertQuery = `
-      INSERT INTO menu (menu_name, start_date, end_date)
-      VALUES ($1, $2, $3) RETURNING *
+      INSERT INTO menu (menu_name)
+      VALUES ($1) RETURNING *
     `;
-    const menuResult = await client.query(menuInsertQuery, [
-      menu_name,
-      start_date,
-      end_date,
-    ]);
+    const menuResult = await client.query(menuInsertQuery, [menu_name]);
 
     const menuId = menuResult.rows[0].id;
 
@@ -149,7 +145,6 @@ app.post("/api/menu/new", async (req: express.Request<MenuInputData>, res) => {
       RETURNING *
     `;
 
-    // Loop through the `recipes` array and insert each recipe_id
     for (const recipeId of recipes) {
       await client.query(menuRecipeInsertQuery, [menuId, recipeId]);
     }
