@@ -1,4 +1,4 @@
-import { Recipe } from "./GetRecipes";
+import { Recipe } from "../types/types";
 
 interface RecipeProps {
   recipes: Recipe[];
@@ -44,8 +44,8 @@ export default function AllRecipes(recipes: RecipeProps) {
                     <td className="m-4 text-lg">
                       {ingredient.ingredient_name}
                     </td>
-                    <td className="m-2 text-lg">{ingredient.quantity_value}</td>
-                    <td className="text-lg">{ingredient.unit_name}</td>
+                    <td className="m-2 text-lg">{ingredient.quantity}</td>
+                    <td className="text-lg">{ingredient.unit}</td>
                   </tr>
                 ))}
               </tbody>

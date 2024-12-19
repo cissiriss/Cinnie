@@ -8,7 +8,6 @@ const MenuForm = () => {
   const [recipes, setRecipes] = useState<Recipe[]>();
   const [chosenRecipesIds, setChosenRecipesIds] = useState<number[]>([]);
 
-
   const handleRecipeSelection = (recipeId: number) => {
     console.log(recipeId);
     setChosenRecipesIds((prev) => {
@@ -20,7 +19,6 @@ const MenuForm = () => {
     });
     console.log(chosenRecipesIds);
   };
-
 
   const onSubmit = (data: PostMenu) => {
     fetch("http://localhost:3000/api/menu/new", {
@@ -41,10 +39,6 @@ const MenuForm = () => {
       .catch((error) => {
         console.error("Error creating menu:", error);
       });
-
-      body: JSON.stringify(data),
-    });
-
   };
 
   useEffect(() => {
