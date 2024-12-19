@@ -62,8 +62,6 @@ app.get("/api/menus", (request, response) => __awaiter(void 0, void 0, void 0, f
         const { rows } = yield client.query(`SELECT
     m.id AS menu_id,
     m.menu_name,
-    m.start_date,
-    m.end_date,
     COALESCE(
         json_agg(
             json_build_object(
