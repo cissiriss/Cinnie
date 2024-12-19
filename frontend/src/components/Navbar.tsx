@@ -57,6 +57,7 @@ export default function Navbar() {
 
             <div className="dropdown m-4">
               <div
+                id="menus"
                 tabIndex={0}
                 role="button"
                 className="btn m-1 text-dark-green text-xl ">
@@ -66,7 +67,10 @@ export default function Navbar() {
                 tabIndex={0}
                 className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                 <li>
-                  <Link className="text-dark-green" to="/menus">
+                  <Link
+                    id="see-menus"
+                    className="see-menus text-dark-green"
+                    to="/menus">
                     See menus
                   </Link>
                 </li>
