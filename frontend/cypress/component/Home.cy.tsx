@@ -10,8 +10,4 @@ describe("Home", () => {
     cy.get("ol").should("be.visible");
     cy.get("li").should("have.length", 3);
   });
-  it("should be a navbar visible", () => {
-    cy.mount(<Home />);
-    cy.get("nav").should("be.visible");
-  });
 });

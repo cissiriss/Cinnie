@@ -69,8 +69,6 @@ const MenuForm = () => {
           </button>
         </form>
       </div>
-
-      <h2>Selected recipes for .. </h2>
     </div>
   );
 };
