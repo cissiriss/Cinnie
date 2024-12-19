@@ -8,8 +8,6 @@ const MenuForm = () => {
   const [recipes, setRecipes] = useState<Recipe[]>();
   const [chosenRecipesIds, setChosenRecipesIds] = useState<number[]>([]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const value = watch("recipe_ids");
 
   const handleRecipeSelection = (recipeId: number) => {
     console.log(recipeId);
@@ -23,12 +21,14 @@ const MenuForm = () => {
     console.log(chosenRecipesIds);
   };
 
+
   const onSubmit = (data: PostMenu) => {
     fetch("http://localhost:3000/api/menu/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify({
         menu_name: data.menu_name,
         recipe_ids: chosenRecipesIds,
@@ -41,6 +41,10 @@ const MenuForm = () => {
       .catch((error) => {
         console.error("Error creating menu:", error);
       });
+
+      body: JSON.stringify(data),
+    });
+
   };
 
   useEffect(() => {

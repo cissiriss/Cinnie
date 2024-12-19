@@ -22,7 +22,6 @@ const AllMenus = () => {
         }
         const data = await response.json();
         setMenus(data);
-        console.log("data", data);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);

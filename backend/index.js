@@ -178,7 +178,6 @@ app.post("/api/menu/new", (req, res) => __awaiter(void 0, void 0, void 0, functi
             menu: menuResult.rows[0],
             recipe_ids,
         };
-        console.log(result);
         res.status(201).json(result);
     }
     catch (error) {

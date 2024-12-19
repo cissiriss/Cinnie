@@ -16,8 +16,6 @@ export default function RecepieForm() {
   };
 
   const onSubmit: SubmitHandler<RecipeType> = async (data) => {
-    console.log(data);
-
     await fetch("http://localhost:3000/api/recipe/new", {
       method: "POST",
       headers: {
@@ -43,13 +41,11 @@ export default function RecepieForm() {
           <textarea
             {...register("recipe.description")}
             className="textarea textarea-bordered w-full max-w-lg m-4"
-            placeholder="Description"
-          ></textarea>
+            placeholder="Description"></textarea>
           <textarea
             {...register("recipe.instructions")}
             className="textarea textarea-bordered w-full max-w-lg m-4"
-            placeholder="Instructions"
-          ></textarea>
+            placeholder="Instructions"></textarea>
           <input
             {...register("recipe.servings")}
             type="number"
@@ -84,8 +80,7 @@ export default function RecepieForm() {
               />
               <select
                 {...register(`ingredients.${index}.unit`)}
-                className="select select-success m-4"
-              >
+                className="select select-success m-4">
                 <option disabled selected>
                   Unit
                 </option>
@@ -110,8 +105,7 @@ export default function RecepieForm() {
           <button
             type="button"
             onClick={handleAddIngredient}
-            className="btn btn-neutral m-4 w-full max-w-xs"
-          >
+            className="btn btn-neutral m-4 w-full max-w-xs">
             Add Ingredient
           </button>
         </div>

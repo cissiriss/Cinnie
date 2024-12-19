@@ -176,7 +176,6 @@ app.post("/api/menu/new", async (req, res) => {
       recipe_ids,
     };
 
-    console.log(result);
     res.status(201).json(result);
   } catch (error) {
     await client.query("ROLLBACK");
