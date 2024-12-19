@@ -59,7 +59,8 @@ const AllMenus = () => {
             </ul>
             <button
               onClick={() => viewShoppingList(menu.menu_id)}
-              className="btn btn-neutral m-4 w-full max-w-xs">
+              className="btn btn-neutral m-4 w-full max-w-xs"
+            >
               Create shopping list
             </button>
           </div>

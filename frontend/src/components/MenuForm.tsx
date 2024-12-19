@@ -1,34 +1,60 @@
 import { useForm } from "react-hook-form";
 
-import { MenuType, Recipe } from "../types/types";
+import { PostMenu, Recipe } from "../types/types";
 import { useEffect, useState } from "react";
 
 const MenuForm = () => {
-  const { register, watch, handleSubmit } = useForm<MenuType>();
+  const { register, handleSubmit } = useForm<PostMenu>();
   const [recipes, setRecipes] = useState<Recipe[]>();
-  const [chosenRecipes, setChosenRecipes] = useState<string[]>([]);
-  // const [chosenRecipesIds, setChosenRecipesIds] = useState<number[]>([]);
+  const [chosenRecipesIds, setChosenRecipesIds] = useState<number[]>([]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const value = watch("recipes");
+
+  const handleRecipeSelection = (recipeId: number) => {
+    console.log(recipeId);
+    setChosenRecipesIds((prev) => {
+      if (prev.includes(recipeId)) {
+        return prev.filter((id) => id !== recipeId);
+      } else {
+        return [...prev, recipeId];
+      }
+    });
+    console.log(chosenRecipesIds);
+  };
+
+
+  const onSubmit = (data: PostMenu) => {
+    fetch("http://localhost:3000/api/menu/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        menu_name: data.menu_name,
+        recipe_ids: chosenRecipesIds,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("Menu created successfully:", result);
+      })
+      .catch((error) => {
+        console.error("Error creating menu:", error);
+      });
+
+      body: JSON.stringify(data),
+    });
+
+  };
 
   useEffect(() => {
     fetch("http://localhost:3000/api/recipes/")
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data);
-      });
+      })
+      .catch((error) => console.error("Error fetching recipes:", error));
   }, []);
-
-  const onSubmit = (data: MenuType) => {
-    fetch("http://localhost:3000/api/menu/new", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-  };
 
   return (
     <div className="container flex flex-col items-center w-full">
@@ -44,16 +70,11 @@ const MenuForm = () => {
           <div className="flex flex-col overflow-y-scroll h-96">
             {recipes?.map((recipe) => (
               <>
-                <p key={recipe.id}>{recipe.recipe_name}</p>
+                <p key={`recipe.id-${recipe.id}`}>{recipe.recipe_name}</p>
 
                 <input
-                  {...register("recipes")}
-                  onChange={(value) => {
-                    setChosenRecipes([...chosenRecipes, value.target.value]);
-                    // setChosenRecipesIds([...chosenRecipesIds, value.target.id]);
-                    // console.log("chosenRecipesIds", chosenRecipesIds);
-                  }}
                   key={recipe.id}
+                  onChange={() => handleRecipeSelection(recipe.id)}
                   type="checkbox"
                   className="checkbox"
                   value={recipe.recipe_name}

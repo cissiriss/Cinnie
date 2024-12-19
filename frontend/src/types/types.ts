@@ -5,6 +5,11 @@ export type RecipeType = z.infer<typeof formSchema>;
 
 export type MenuType = z.infer<typeof menuSchema>;
 
+export interface PostMenu {
+  menu_name: string;
+  recipe_ids: number[];
+}
+
 export interface Menu {
   recipe_id: number;
   recipe_name: string;
