@@ -21,7 +21,6 @@ interface Recipe {
   recipe_name: string;
   description: string;
   instructions: string;
-  prep_time: string;
   cook_time: string;
   servings: string;
 }
@@ -112,7 +111,7 @@ app.get("/api/recipes", async (req: express.Request<Recipe>, res) => {
   try {
     const { rows } = await client.query(`
 SELECT
-    r.id, -- Include the recipe ID here
+    r.id,
     r.recipe_name,
     r.instructions,
     r.cook_time,
@@ -146,7 +145,7 @@ GROUP BY
 });
 
 app.post("/api/menu/new", async (req, res) => {
-  const { menu_name, recipe_ids } = req.body; // Expect recipe_ids
+  const { menu_name, recipe_ids } = req.body;
 
   try {
     await client.query("BEGIN");
@@ -184,46 +183,6 @@ app.post("/api/menu/new", async (req, res) => {
   }
 });
 
-// app.post("/api/menu/new", async (req: express.Request<MenuInputData>, res) => {
-//   const { menu_name, recipes } = req.body;
-
-//   try {
-//     await client.query("BEGIN");
-
-//     const menuInsertQuery = `
-//       INSERT INTO menu (menu_name)
-//       VALUES ($1) RETURNING *
-//     `;
-//     const menuResult = await client.query(menuInsertQuery, [menu_name]);
-
-//     const menuId = menuResult.rows[0].id;
-
-//     const menuRecipeInsertQuery = `
-//       INSERT INTO menu_recipe (menu_id, recipe_id, date)
-//       VALUES ($1, $2, now())
-//       RETURNING *
-//     `;
-
-//     for (const recipeId of recipes) {
-//       await client.query(menuRecipeInsertQuery, [menuId, recipeId]);
-//     }
-
-//     await client.query("COMMIT");
-
-//     const result = {
-//       menu: menuResult.rows[0],
-//       recipes,
-//     };
-
-//     console.log(result);
-//     res.status(201).json(result);
-//   } catch (error) {
-//     await client.query("ROLLBACK");
-//     console.error(error);
-//     res.status(500).json({ error: "An error occurred while saving the menu" });
-//   }
-// });
-
 app.post(
   "/api/recipe/new/",
   async (req: express.Request<RecipeInputData>, res) => {
@@ -232,15 +191,15 @@ app.post(
       await client.query("BEGIN");
 
       const recipeInsertQuery = `
-      INSERT INTO recipe (recipe_name, description, instructions, prep_time, cook_time, servings)
-      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
+      INSERT INTO recipe (recipe_name, description, instructions, cook_time, servings)
+      VALUES ($1, $2, $3, $4, $5) RETURNING *
     `;
       const recipeValues = [
         recipe.recipe_name,
         recipe.description,
         recipe.instructions,
-        parseInt(recipe.prep_time, 10),
-        parseInt(recipe.cook_time, 10),
+        recipe.cook_time,
+        10,
         parseInt(recipe.servings, 10),
       ];
 

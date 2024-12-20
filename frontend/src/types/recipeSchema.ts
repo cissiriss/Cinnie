@@ -10,7 +10,6 @@ export const recipeSchema = z.object({
   instructions: z
     .string()
     .min(1, { message: "Du behöver fylla i instruktioner" }),
-  prep_time: z.string(),
   cook_time: z.string(),
   servings: z.string(),
 });

@@ -15,8 +15,10 @@ export default function AllRecipes(recipes: RecipeProps) {
       <div className="flex items-center w-1/2 m-4 bg-base-300 ">
         <table className="table w-full justify-center">
           {recipes.recipes.map((recipe) => (
-            <div className="flex flex-col justify-center m-6">
-              <h3 className="text-2xl m-4">{recipe.recipe_name}</h3>
+            <div key={recipe.id} className="flex flex-col justify-center m-6">
+              <h3 key={recipe.id} className="text-2xl m-4">
+                {recipe.recipe_name}
+              </h3>
               <ul>
                 <li key={recipe.id}>
                   {recipe.description && (
@@ -27,9 +29,7 @@ export default function AllRecipes(recipes: RecipeProps) {
                       How to make: {recipe.instructions}
                     </p>
                   )}
-                  {recipe.prep_time && (
-                    <p className="text-lg">Prep time: {recipe.prep_time}</p>
-                  )}
+
                   {recipe.cook_time && (
                     <p className="text-lg">Cook time: {recipe.cook_time}</p>
                   )}
