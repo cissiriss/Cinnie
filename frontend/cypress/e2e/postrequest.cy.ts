@@ -3,7 +3,6 @@ interface RecipeData {
     recipe_name: string;
     description: string;
     instructions: string;
-    prep_time: number;
     cook_time: number;
     servings: number;
   };
@@ -19,7 +18,6 @@ const formData: RecipeData = {
     recipe_name: "Test Menu",
     description: "This is a test menu published via a test",
     instructions: "Cook the food",
-    prep_time: 30,
     cook_time: 45,
     servings: 4,
   },

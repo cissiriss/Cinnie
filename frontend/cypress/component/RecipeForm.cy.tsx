@@ -8,6 +8,11 @@ describe("RecipeForm", () => {
         <RecepieForm />
       </RecipeFormProvider>
     );
+
     cy.get("input").should("be.visible");
+    cy.get("button").should("be.visible");
+    cy.get("select").should("be.visible");
+    cy.get("option").should("be.visible");
+    cy.get("[type='submit']").should("be.visible").click();
   });
 });

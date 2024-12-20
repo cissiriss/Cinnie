@@ -26,7 +26,6 @@ export interface Recipe {
   recipe_name: string;
   description: string;
   instructions: string;
-  prep_time: number;
   cook_time: number;
   servings: number;
   ingredients: Ingredient[];

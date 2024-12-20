@@ -16,6 +16,7 @@ export default function RecepieForm() {
   };
 
   const onSubmit: SubmitHandler<RecipeType> = async (data) => {
+    console.log("data", data);
     await fetch("http://localhost:3000/api/recipe/new", {
       method: "POST",
       headers: {
@@ -23,9 +24,8 @@ export default function RecepieForm() {
       },
       body: JSON.stringify(data),
     });
-    if (!Error) {
-      reset();
-    }
+
+    reset();
   };
 
   return (
@@ -33,34 +33,41 @@ export default function RecepieForm() {
       <div className="container flex flex-col items-center w-full">
         <div className="container flex flex-col items-center w-full max-w-lg m-4">
           <input
+            required
             {...register("recipe.recipe_name")}
+            id="recipe_name"
             type="text"
             placeholder="Recepie name"
             className="input input-bordered input-success w-full max-w-lg m-4"
           />
           <textarea
+            required
             {...register("recipe.description")}
+            id="description"
             className="textarea textarea-bordered w-full max-w-lg m-4"
-            placeholder="Description"></textarea>
+            placeholder="Description"
+          ></textarea>
           <textarea
+            required
             {...register("recipe.instructions")}
             className="textarea textarea-bordered w-full max-w-lg m-4"
-            placeholder="Instructions"></textarea>
+            placeholder="Instructions"
+            id="instructions"
+          ></textarea>
+
           <input
+            required
             {...register("recipe.servings")}
+            id="servings"
             type="number"
             placeholder="Servings"
             className="input input-bordered input-success w-full max-w-xs  m-4"
           />
           <div className="flex justify-center">
             <input
-              {...register("recipe.prep_time")}
-              type="number"
-              placeholder="Prep time"
-              className="input input-bordered input-success w-full max-w-lg m-4"
-            />
-            <input
+              required
               {...register("recipe.cook_time")}
+              id="cook_time"
               type="number"
               placeholder="Cook time"
               className="input input-bordered input-success w-full max-w-lg m-4"
@@ -73,14 +80,18 @@ export default function RecepieForm() {
             <div key={item.id}>
               <h3>Ingredient</h3>
               <input
+                required
                 {...register(`ingredients.${index}.ingredient_name`)}
                 type="text"
                 placeholder="Ingredient"
                 className="input input-bordered input-success m-4"
+                id="ingredient_name"
               />
               <select
                 {...register(`ingredients.${index}.unit`)}
-                className="select select-success m-4">
+                className="select select-success m-4"
+                required
+              >
                 <option disabled selected>
                   Unit
                 </option>
@@ -94,6 +105,7 @@ export default function RecepieForm() {
               </select>
 
               <input
+                required
                 {...register(`ingredients.${index}.quantity`)}
                 type="text"
                 placeholder="Quantity"
@@ -105,7 +117,8 @@ export default function RecepieForm() {
           <button
             type="button"
             onClick={handleAddIngredient}
-            className="btn btn-neutral m-4 w-full max-w-xs">
+            className="btn btn-neutral m-4 w-full max-w-xs"
+          >
             Add Ingredient
           </button>
         </div>
